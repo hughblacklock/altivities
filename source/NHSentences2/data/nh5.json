@@ -3,10 +3,10 @@
     "unit": 1,
     "activity": 1,
     "lines": [
-      {"text": "Hello!", "type": "static", "speaker": "Bob"},
-      {"text": "My name is ____.", "type": "dynamic", "speaker": "Bob"},
-      {"text": "Nice to meet you!", "type": "static", "speaker": "Bob"},
-      {"text": "Nice to meet you too!", "type": "static", "speaker": "Sara"}
+      {"text": "Hello!", "type": "static", "speaker": "1"},
+      {"text": "My name is ____.", "type": "dynamic", "speaker": "1"},
+      {"text": "Nice to meet you!", "type": "static", "speaker": "1"},
+      {"text": "Nice to meet you too!", "type": "static", "speaker": "2"}
     ]
   },
   {

@@ -123,6 +123,13 @@ function createSentenceDiv(line) {
   // store speaker number on the element
   div.dataset.speaker = line.speaker || "1";
 
+  // Add speaker-specific color hints for the sentence bank
+  if (div.dataset.speaker === "1") {
+      div.classList.add("bank-left");
+  } else {
+      div.classList.add("bank-right");
+  }
+
   // existing dynamic/static text creation...
   if (line.type === 'dynamic') {
     const span = document.createElement('span');
@@ -166,6 +173,8 @@ function handleDrop(e) {
   draggedElement.style.position = "relative";
   draggedElement.style.left = "0";
   draggedElement.style.top = "0";
+  draggedElement.classList.remove("bank-left", "bank-right");
+
 
   // Only apply alignment in workspace-left
   if (this.id === "workspace-left") {

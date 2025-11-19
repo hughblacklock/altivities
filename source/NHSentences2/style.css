@@ -97,7 +97,6 @@ button:hover {
 /* draggable sentence styles */
 .dialogue {
   cursor: grab;
-  background: white;
   padding: 10px 14px;
   margin: 8px 0;
   border-radius: 10px;
@@ -181,3 +180,22 @@ button:hover {
   padding: 10px;
   overflow-y: auto;
 }
+
+/* Speaker color coding in the sentence bank */
+#sentence-bank .dialogue.bank-left {
+  background-color: #e0f4ff !important;    /* light blue */
+  border-left: 4px solid #4aa3ff;
+}
+
+#sentence-bank .dialogue.bank-right {
+  background-color: #dcf8c6 !important;    /* light green */
+  border-right: 4px solid #4caf50;
+}
+
+/* Ensure bank colors do not affect bubble mode */
+#workspace-left .bank-left,
+#workspace-left .bank-right {
+  background: white !important;
+  border: none !important;
+}
+
