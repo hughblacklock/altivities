@@ -1,0 +1,203 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f4f4f4;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#app {
+  text-align: center;
+  width: 90%;
+  max-width: 600px;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  font-size: 1.3em;
+  margin: 10px;
+  padding: 20px 40px;
+  border: none;
+  border-radius: 12px;
+  background: #3498db;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #2980b9;
+}
+
+
+
+.dynamic {
+  color: green;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.dialogue:active {
+  cursor: grabbing;
+  transform: scale(1.02);
+}
+
+/* ACTIVITY SCENE LAYOUT */
+
+#activity-container {
+  height: 90%;
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Left workspace (drop zone) */
+#workspace-left {
+  width: 75%;
+  height: 100%;
+  position: relative;
+  border-right: 2px solid #ccc;
+  overflow: hidden;
+}
+
+/* Right column (sentence bank) */
+#sentence-bank {
+  width: 25%;
+  height: 100%;
+  position: relative;
+  overflow-y: auto;
+  padding: 10px;
+  background: #fafafa;
+}
+
+/* Bottom button bar */
+#bottom-buttons {
+  height: 10%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.material-icons {
+  font-size: 40px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s;
+}
+
+.material-icons:hover {
+  transform: scale(1.15);
+}
+
+/* draggable sentence styles */
+.dialogue {
+  cursor: grab;
+  padding: 10px 14px;
+  margin: 8px 0;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+  user-select: none;
+  width: fit-content;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+
+    /* REMOVE ABSOLUTE POSITIONING */
+  position: relative;
+  left: 0;
+  top: 0;
+}
+
+.dynamic {
+  color: green;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#workspace-left.menu-mode {
+  width: 100% !important;   /* full width during menus */
+}
+
+#workspace-left.activity-mode {
+  width: 75% !important;    /* 75% during activity */
+}
+
+/* Speaker 1 (left side) */
+.left-bubble {
+  display: flex;
+  align-self: flex-start;
+  background: #e0f4ff;
+  margin-right: auto;
+  flex-direction: row !important;
+}
+
+/* Speaker 2 (right side) */
+.right-bubble {
+  display: flex;
+  align-items: flex-start;
+  background: #dcf8c6;
+  margin-left: auto;
+  flex-direction: row !important;
+}
+
+/* Avatar styling */
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 10px;
+}
+
+/* Bubble (text container) */
+.bubble-content {
+  padding: 14px 18px;
+  background: #e0f4ff;
+  border-radius: 16px;
+  font-size: 18px;
+  line-height: 1.4;
+  max-width: 100%;
+  white-space: pre-wrap;
+}
+
+.right-bubble .bubble-content {
+  background: #dcf8c6;
+}
+
+/* Workspace-left must allow "align-self" to work */
+#workspace-left {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+/* Speaker color coding in the sentence bank */
+#sentence-bank .dialogue.bank-left {
+  background-color: #e0f4ff !important;    /* light blue */
+  border-left: 4px solid #4aa3ff;
+}
+
+#sentence-bank .dialogue.bank-right {
+  background-color: #dcf8c6 !important;    /* light green */
+  border-right: 4px solid #4caf50;
+}
+
+/* Ensure bank colors do not affect bubble mode */
+#workspace-left .bank-left,
+#workspace-left .bank-right {
+  background: white !important;
+  border: none !important;
+}
+
