@@ -126,8 +126,8 @@ function createSentenceDiv(line) {
 
   // JSON-driven avatar
   div.dataset.avatar = line.avatar
-    ? `data/images/${line.avatar}`
-    : "data/images/default.png";
+    ? `data/Images/${line.avatar}`
+    : "data/Images/default.png";
   // Add speaker-specific color hints for the sentence bank
   if (div.dataset.speaker === "1") {
       div.classList.add("bank-left");
