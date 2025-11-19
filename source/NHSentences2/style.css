@@ -134,27 +134,29 @@ button:hover {
 
 /* Speaker 1 (left side) */
 .left-bubble {
+  display: flex;
   align-self: flex-start;
   background: #e0f4ff;
   margin-right: auto;
-  flex-direction: row;
+  flex-direction: row !important;
 }
 
 /* Speaker 2 (right side) */
 .right-bubble {
-  align-self: flex-end;
+  display: flex;
+  align-items: flex-start;
   background: #dcf8c6;
   margin-left: auto;
-  flex-direction: row-reverse;
-
+  flex-direction: row !important;
 }
 
 /* Avatar styling */
 .avatar {
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   object-fit: cover;
+  margin: 0 10px;
 }
 
 /* Bubble (text container) */

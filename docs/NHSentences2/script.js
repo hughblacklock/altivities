@@ -122,7 +122,12 @@ function createSentenceDiv(line) {
 
   // store speaker number on the element
   div.dataset.speaker = line.speaker || "1";
+  div.dataset.name = line.name || "Unknown";
 
+  // JSON-driven avatar
+  div.dataset.avatar = line.avatar
+    ? `data/images/${line.avatar}`
+    : "data/images/default.png";
   // Add speaker-specific color hints for the sentence bank
   if (div.dataset.speaker === "1") {
       div.classList.add("bank-left");
@@ -148,6 +153,49 @@ function createSentenceDiv(line) {
 
   return div;
 }
+
+function applyBubbleWithAvatar(div) {
+  // If we've already converted this div once, don't do it again
+  if (div.querySelector('.bubble-content')) return;
+
+  const speaker = div.dataset.speaker;
+  const avatarSrc = div.dataset.avatar;
+
+  // Create avatar image (optional: only if avatarSrc exists)
+  let avatar = null;
+  if (avatarSrc) {
+    avatar = document.createElement('img');
+    avatar.className = 'avatar';
+    avatar.src = avatarSrc;
+  }
+
+  // Wrap existing children (text + dynamic spans) into bubble-content
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble-content';
+
+  const nodes = Array.from(div.childNodes);
+  nodes.forEach(n => bubble.appendChild(n)); // moves nodes, keeps events like ondblclick
+
+  // Clear the original div and rebuild layout
+  div.innerHTML = "";
+
+  if (speaker === "1") {
+    // left side speaker
+    div.classList.add('left-bubble');
+    div.classList.remove('right-bubble');
+
+    if (avatar) div.appendChild(avatar);  // [avatar][bubble]
+    div.appendChild(bubble);
+  } else {
+    // right side speaker
+    div.classList.add('right-bubble');
+    div.classList.remove('left-bubble');
+
+    div.appendChild(bubble);              // [bubble][avatar]
+    if (avatar) div.appendChild(avatar);
+  }
+}
+
 
 let draggedElement = null;
 
@@ -178,15 +226,7 @@ function handleDrop(e) {
 
   // Only apply alignment in workspace-left
   if (this.id === "workspace-left") {
-    const speaker = draggedElement.dataset.speaker;
-
-    if (speaker === "1") {
-      draggedElement.classList.add("left-bubble");
-      draggedElement.classList.remove("right-bubble");
-    } else {
-      draggedElement.classList.add("right-bubble");
-      draggedElement.classList.remove("left-bubble");
-    }
+    applyBubbleWithAvatar(draggedElement);
   }
 
   // In the sentence bank → always neutral
