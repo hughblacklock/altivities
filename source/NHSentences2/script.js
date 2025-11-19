@@ -195,7 +195,13 @@ function handleDrop(e) {
     draggedElement.classList.remove("right-bubble");
   }
 }
-
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
 
 function showDialogue() {
   enterActivityMode();
@@ -210,8 +216,11 @@ function showDialogue() {
 
   originalLines = JSON.parse(JSON.stringify(entry.lines));
 
-  // fill right column with draggable sentences
-  entry.lines.forEach(line => {
+  // shuffle a copy so originalLines stays correct
+  const shuffled = shuffleArray([...entry.lines]);
+
+  // fill right column with draggable sentences in random order
+  shuffled.forEach(line => {
     const div = createSentenceDiv(line);
     bank.appendChild(div);
   });
@@ -263,7 +272,11 @@ function resetActivity() {
   left.innerHTML = "";
   bank.innerHTML = "";
 
-  originalLines.forEach(line => {
+  // Shuffle a copy of original lines
+  const shuffled = shuffleArray([...originalLines]);
+
+  // Repopulate sentence bank in new random order
+  shuffled.forEach(line => {
     bank.appendChild(createSentenceDiv(line));
   });
 }
