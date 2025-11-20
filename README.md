@@ -1,12 +1,16 @@
 # Altivities
 
-ALT Activities &amp; Games that can be accessed on the internet.
+ALT Activities &amp; Games that can be accessed on the internet. Forked and re-hosted to my GitHub pages from https://github.com/earthiverse/altivities because my school implemented a new firewall for student laptops and wouldn't unblock the redirect site (https://altivities.earthiverse.ca/abcrace/). Games in the Earthiverse Games section were created and generously shared by Earthiverse, you can view the original repo [here](https://github.com/earthiverse/altivities).
 
-## Games
+## My Games 
+
+Games in this category were poorly created by me and use the packaging and server functionality provided by Earthiverse.
+
+## Earthiverse Games
 
 ### ABC Race
 
-<https://altivities.earthiverse.ca/abcrace/>
+<https://hughblacklock.github.io/altivities/abcrace/>
 
 A game where you race to click on the letters A to Z as fast as you can.
 
@@ -14,7 +18,7 @@ View the documentation [here](https://github.com/earthiverse/altivities/tree/mai
 
 ### Bingo
 
-<https://altivities.earthiverse.ca/bingo/?wordlist=../wordlists/General/colors.json>
+<https://hughblacklock.github.io/altivities/bingo/?wordlist=../wordlists/General/colors.json>
 
 A 3x3 bingo card generator for tablets.
 
@@ -22,7 +26,7 @@ View the documentation [here](https://github.com/earthiverse/altivities/tree/mai
 
 ### Cards
 
-<https://altivities.earthiverse.ca/cards/?wordlist=../wordlists/General/colors.json>
+<https://hughblacklock.github.io/altivities/cards/?wordlist=../wordlists/General/colors.json>
 
 A card chooser for students to use in class. Using this, you can easily check that students are comprehending what word you are pronouncing.
 
@@ -30,7 +34,7 @@ View the documentation [here](https://github.com/earthiverse/altivities/tree/mai
 
 ### Clock
 
-<https://altivities.earthiverse.ca/clock/>
+<https://hughblacklock.github.io/altivities/clock/>
 
 A clock that gives a random time, and asks you to enter what time it is showing.
 
@@ -38,7 +42,7 @@ View the documentation [here](https://github.com/earthiverse/altivities/tree/mai
 
 ### Kana Race (かな　レース)
 
-<https://altivities.earthiverse.ca/kanarace/>
+<https://hughblacklock.github.io/altivities/kanarace/>
 
 A kana version of ABC Race.
 
@@ -46,7 +50,7 @@ View the documentation [here](https://github.com/earthiverse/altivities/tree/mai
 
 ### Memory
 
-<https://altivities.earthiverse.ca/memory/?wordlist=../wordlists/General/colors.json>
+<https://hughblacklock.github.io/altivities/memory/?wordlist=../wordlists/General/colors.json>
 
 A multiplayer memory game for tablets.
 
@@ -54,7 +58,7 @@ View the documentation [here](https://github.com/earthiverse/altivities/tree/mai
 
 ### Order
 
-<https://altivities.earthiverse.ca/order/?wordlist=../wordlists/General/alphabet.json&order=A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z>
+<https://hughblacklock.github.io/altivities/order/?wordlist=../wordlists/General/alphabet.json&order=A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z>
 
 An ordering game for tablets.
 
@@ -62,7 +66,7 @@ View the documentation [here](https://github.com/earthiverse/altivities/tree/mai
 
 ### Parfait
 
-<https://altivities.earthiverse.ca/parfait/>
+<https://hughblacklock.github.io/altivities/parfait/>
 
 A simple game where you can build a parfait. Works well for an activity for `Let's Try 2`'s `Unit 7`.
 
@@ -70,7 +74,7 @@ View the documentation [here](https://github.com/earthiverse/altivities/tree/mai
 
 ### Pizza
 
-<https://altivities.earthiverse.ca/pizza/>
+<https://hughblacklock.github.io/altivities/pizza/>
 
 A simple game where you can build a pizza. Works well for an activity for `Let's Try 2`'s `Unit 7`.
 
@@ -78,7 +82,7 @@ View the documentation [here](https://github.com/earthiverse/altivities/tree/mai
 
 ### Sentences
 
-<https://altivities.earthiverse.ca/sentences/?sentence=I%20like%20%E2%91%A0.&1_wordlist=../wordlists/LetsTry1/unit4_cards.json&1_include=red,yellow,blue,green,purple,orange,pink,brown,white,black>
+<https://hughblacklock.github.io/altivities/sentences/?sentence=I%20like%20%E2%91%A0.&1_wordlist=../wordlists/LetsTry1/unit4_cards.json&1_include=red,yellow,blue,green,purple,orange,pink,brown,white,black>
 
 A random sentence generator to practice vocabulary with your class
 
@@ -88,7 +92,7 @@ View the documentation [here](https://github.com/earthiverse/altivities/tree/mai
 
 **NOTE: This game is a work in progress. There is no currently no documentation. The game may change a lot.**
 
-<https://altivities.earthiverse.ca/vocab_rpg/>
+<https://hughblacklock.github.io/altivities/vocab_rpg/>
 
 An RPG-like game to practice spelling and vocabulary.
 
