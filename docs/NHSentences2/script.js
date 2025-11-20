@@ -496,6 +496,11 @@ function showActivityButtons(show) {
 
 }
 
+function editWord(el){
+  const newWord=prompt("Enter your word:");
+  if(newWord) el.textContent=newWord;
+}
+
 function handleTrashDrop(e) {
     if (!draggedElement) return;
 
