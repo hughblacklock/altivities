@@ -2,11 +2,7 @@
 
 ALT Activities &amp; Games that can be accessed on the internet. Forked and re-hosted to my GitHub pages from https://github.com/earthiverse/altivities because my school implemented a new firewall for student laptops and wouldn't unblock the redirect site (https://altivities.earthiverse.ca/abcrace/). Games in the Earthiverse Games section were created and generously shared by Earthiverse, you can view the original repo [here](https://github.com/earthiverse/altivities).
 
-## My Games 
-
-Games in this category were poorly created by me and use the packaging and server functionality provided by Earthiverse.
-
-## Earthiverse Games
+## Games
 
 ### ABC Race
 
