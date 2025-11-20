@@ -1,5 +1,6 @@
 body {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "JKHandwriting", Schoolbell, "Comic Sans MS";
+  font-weight: bold;  background: #f4f4f4;
   background: #f4f4f4;
   margin: 0;
   display: flex;
@@ -44,7 +45,7 @@ button:hover {
   font-weight: bold;
 }
 
-.reset, .save {
+.reset {
   position: fixed;
   bottom: 20px;
   border-radius: 50%;
@@ -53,6 +54,20 @@ button:hover {
   font-size: 0.9em;
   background: #555;
   color: white;
+}
+
+.save {
+  position: relative;
+  display: block;
+  margin: 20px auto 0 auto;  /* centers the image under the scene */
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  left: 20px;
+}
+.save:hover {
+  transform: scale(1.1);
 }
 
 .dialogue {

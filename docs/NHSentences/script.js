@@ -158,15 +158,18 @@ function addReset(){
   document.body.appendChild(btn);
 }
 
-function addSave(){
-  let btn=document.querySelector('.save');
-  if(btn) btn.remove();
-  btn=document.createElement('button');
-  btn.className='save';
-  btn.textContent='💾';
-  btn.onclick=saveScene;
-  document.body.appendChild(btn);
+function addSave() {
+  let btn = document.querySelector('.save');
+  if (btn) btn.remove();
+  btn = document.createElement('img');
+  btn.className = 'save';
+  btn.src = 'images/save.png';
+  btn.alt = 'Save';
+  btn.title = 'Save';
+  btn.onclick = saveScene;
+  document.getElementById('app').appendChild(btn);
 }
+
 
 function saveScene(){
   // Prompt for student name
