@@ -353,10 +353,6 @@ function handleRowDrop(e) {
           const bank = document.getElementById("sentence-bank");
           bank.appendChild(draggedElement);
 
-          // Optional: highlight briefly
-          draggedElement.style.backgroundColor = "#ffcccc";
-          setTimeout(() => draggedElement.style.backgroundColor = "", 300);
-
           return;
     }
 
