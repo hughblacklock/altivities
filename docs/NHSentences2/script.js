@@ -225,16 +225,48 @@ function handleDrop(e) {
 
 
   // Only apply alignment in workspace-left
-  if (this.id === "workspace-left") {
-    applyBubbleWithAvatar(draggedElement);
-  }
+  //if (this.id === "workspace-left") {
+  //  applyBubbleWithAvatar(draggedElement);
+  //}
 
   // In the sentence bank → always neutral
   if (this.id === "sentence-bank") {
-    draggedElement.classList.remove("left-bubble");
-    draggedElement.classList.remove("right-bubble");
+
+      // Remove bubble alignment classes
+      draggedElement.classList.remove("left-bubble");
+      draggedElement.classList.remove("right-bubble");
+
+      draggedElement.classList.remove("chat-left", "chat-right");
+
+      // If an avatar was added, remove it
+      const avatar = draggedElement.querySelector(".avatar");
+      if (avatar) avatar.remove();
+
+      // If bubble-content wrapper exists, unwrap it
+      const bubbleContent = draggedElement.querySelector(".bubble-content");
+      if (bubbleContent) {
+
+          // Move its children back into the main div
+          const children = Array.from(bubbleContent.childNodes);
+          draggedElement.innerHTML = ""; // clear old structure
+          children.forEach(child => draggedElement.appendChild(child));
+      }
+
+      // Restore the original sentence-bank color
+      const speaker = draggedElement.dataset.speaker;
+      draggedElement.classList.remove("bank-left", "bank-right");
+
+      if (speaker === "1") {
+          draggedElement.classList.add("bank-left");
+      } else {
+          draggedElement.classList.add("bank-right");
+      }
+
+      return; // FINISH — do not apply chat-bubble formatting
   }
+
 }
+
 function shuffleArray(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -243,12 +275,114 @@ function shuffleArray(arr) {
   return arr;
 }
 
+function createBlankRow() {
+    const row = document.createElement('div');
+    row.className = 'conversation-row';
+
+    const slot = document.createElement('div');
+    slot.className = 'conversation-slot dotted';
+    slot.dataset.empty = "true";
+    
+    // Make it a drop target
+    slot.addEventListener("dragover", e => e.preventDefault());
+    slot.addEventListener("drop", handleRowDrop);
+
+    row.appendChild(slot);
+
+    document.getElementById("workspace-left").appendChild(row);
+}
+
+function handleRowDrop(e) {
+    e.preventDefault();
+    e.stopPropagation(); //stop 
+    if (!draggedElement) return;
+
+    const slot = this;
+
+    // If this is the first time something is dropped into this row:
+    if (slot.dataset.empty === "true") {
+        
+        slot.classList.remove("dotted");
+        slot.dataset.empty = "false";
+        slot.classList.add("filled");
+
+        // Create avatar + message-group
+        const speaker = draggedElement.dataset.speaker;
+        slot.dataset.speaker = speaker;
+        const avatarSrc = draggedElement.dataset.avatar;
+
+        const rowContainer = document.createElement('div');
+        rowContainer.className = 
+            speaker === "1" ? "row-left" : "row-right";
+
+        const avatar = document.createElement('img');
+        avatar.className = 'avatar';
+        avatar.src = avatarSrc;
+
+        const messageGroup = document.createElement('div');
+        messageGroup.className = 'message-group';
+
+        slot.innerHTML = ""; // Clear dotted slot
+        if (speaker === "1") {
+            rowContainer.appendChild(avatar);
+            rowContainer.appendChild(messageGroup);
+        } else {
+            rowContainer.appendChild(messageGroup);
+            rowContainer.appendChild(avatar);
+        }
+
+        slot.appendChild(rowContainer);
+
+        // Add the first bubble
+        messageGroup.appendChild(draggedElement);
+        draggedElement.classList.remove("bank-left", "bank-right");
+        draggedElement.classList.add(
+            speaker === "1" ? "chat-left" : "chat-right"
+);
+
+        // Create next new dotted row
+        createBlankRow();
+
+    } else {
+      // Row is already filled → ensure speakers match
+      const rowSpeaker = slot.dataset.speaker;        // assigned when first bubble dropped
+      const bubbleSpeaker = draggedElement.dataset.speaker;
+
+      if (rowSpeaker !== bubbleSpeaker) {
+          // Reject incompatible bubble → return to bank
+          const bank = document.getElementById("sentence-bank");
+          bank.appendChild(draggedElement);
+
+          // Optional: highlight briefly
+          draggedElement.style.backgroundColor = "#ffcccc";
+          setTimeout(() => draggedElement.style.backgroundColor = "", 300);
+
+          return;
+    }
+
+    // Speakers match → add bubble to the row
+    const group = slot.querySelector(".message-group");
+    draggedElement.classList.remove("bank-left", "bank-right");
+    draggedElement.classList.add(
+      slot.dataset.speaker === "1" ? "chat-left" : "chat-right"
+    );
+    group.appendChild(draggedElement);
+
+  }
+}
+
 function showDialogue() {
   enterActivityMode();
-
   
   const left = document.getElementById("workspace-left");
   const bank = document.getElementById("sentence-bank");
+
+  // Clear previous content
+  left.innerHTML = "";
+  bank.innerHTML = "";
+
+  // Create first blank row BEFORE loading sentences
+  createBlankRow();
 
   const entry = data.find(
     d => d.unit === currentUnit && d.activity === currentActivity
@@ -319,6 +453,8 @@ function resetActivity() {
   shuffled.forEach(line => {
     bank.appendChild(createSentenceDiv(line));
   });
+  createBlankRow();
+
 }
 
 window.onload = () => {
@@ -329,10 +465,10 @@ window.onload = () => {
   const left = document.getElementById("workspace-left");
   const bank = document.getElementById("sentence-bank");
 
-  left.addEventListener("dragover", e => e.preventDefault());
+  //left.addEventListener("dragover", e => e.preventDefault());
   bank.addEventListener("dragover", e => e.preventDefault());
 
-  left.addEventListener("drop", handleDrop);
+  //left.addEventListener("drop", handleDrop);
   bank.addEventListener("drop", handleDrop);
 
   showMainMenu();
