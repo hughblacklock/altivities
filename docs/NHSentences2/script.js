@@ -3,6 +3,8 @@ let currentUnit = null;
 let currentActivity = null;
 let data = {};
 let dragSrc = null;
+let previousActivities = [];
+
 
 async function loadData(set) {
   const res = await fetch(`data/${set}.json`);
@@ -23,6 +25,7 @@ function enterMenuMode() {
   // Hide activity-only buttons
   document.getElementById("btn-save").style.display = "none";
   document.getElementById("btn-reset").style.display = "none";
+  document.getElementById("btn-prev-activities").style.display = "none";
 
   // Prepare workspace for menu HTML
   left.innerHTML = "";
@@ -68,6 +71,7 @@ function enterActivityMode() {
   // Show activity buttons
   document.getElementById("btn-save").style.display = "inline-block";
   document.getElementById("btn-reset").style.display = "inline-block";
+  document.getElementById("btn-prev-activities").style.display = "inline-block";
 }
 
 function showUnits() {
@@ -214,6 +218,15 @@ function handleDrop(e) {
   e.preventDefault();
   if (!draggedElement) return;
 
+  draggedElement.classList.remove(
+    "chat-left", "chat-right",
+    "chat-neutral"
+  );
+
+  if (draggedElement.dataset.speaker === "neutral") {
+    draggedElement.classList.add("bank-neutral");
+  }
+
   // Move element
   this.appendChild(draggedElement);
 
@@ -230,40 +243,48 @@ function handleDrop(e) {
   //}
 
   // In the sentence bank → always neutral
+  // In the sentence bank → restore bank formatting
   if (this.id === "sentence-bank") {
 
-      // Remove bubble alignment classes
-      draggedElement.classList.remove("left-bubble");
-      draggedElement.classList.remove("right-bubble");
+    // Remove ALL row/chat/bank styling
+    draggedElement.classList.remove(
+        "left-bubble",
+        "right-bubble",
+        "chat-left",
+        "chat-right",
+        "chat-neutral",
+        "bank-left",
+        "bank-right",
+        "bank-neutral"
+    );
 
-      draggedElement.classList.remove("chat-left", "chat-right");
+    // Remove avatar if exists
+    const avatar = draggedElement.querySelector(".avatar");
+    if (avatar) avatar.remove();
 
-      // If an avatar was added, remove it
-      const avatar = draggedElement.querySelector(".avatar");
-      if (avatar) avatar.remove();
+    // Unwrap bubble-content if it exists
+    const bubbleContent = draggedElement.querySelector(".bubble-content");
+    if (bubbleContent) {
+        const children = Array.from(bubbleContent.childNodes);
+        draggedElement.innerHTML = "";
+        children.forEach(child => draggedElement.appendChild(child));
+    }
 
-      // If bubble-content wrapper exists, unwrap it
-      const bubbleContent = draggedElement.querySelector(".bubble-content");
-      if (bubbleContent) {
+    // Apply correct BANK color
+    const speaker = draggedElement.dataset.speaker;
 
-          // Move its children back into the main div
-          const children = Array.from(bubbleContent.childNodes);
-          draggedElement.innerHTML = ""; // clear old structure
-          children.forEach(child => draggedElement.appendChild(child));
-      }
+    if (speaker === "neutral") {
+        // Always grey in bank
+        draggedElement.classList.add("bank-neutral");
+    } else if (speaker === "1") {
+        draggedElement.classList.add("bank-left");
+    } else {
+        draggedElement.classList.add("bank-right");
+    }
 
-      // Restore the original sentence-bank color
-      const speaker = draggedElement.dataset.speaker;
-      draggedElement.classList.remove("bank-left", "bank-right");
+    return; // stop further processing
+}
 
-      if (speaker === "1") {
-          draggedElement.classList.add("bank-left");
-      } else {
-          draggedElement.classList.add("bank-right");
-      }
-
-      return; // FINISH — do not apply chat-bubble formatting
-  }
 
 }
 
@@ -308,12 +329,24 @@ function handleRowDrop(e) {
 
         // Create avatar + message-group
         const speaker = draggedElement.dataset.speaker;
-        slot.dataset.speaker = speaker;
+        
+        //slot.dataset.speaker = speaker;
+
+        // Neutral first = row not decided yet
+        slot.dataset.speaker = (speaker === "neutral") ? "unset" : speaker;
+
         const avatarSrc = draggedElement.dataset.avatar;
 
         const rowContainer = document.createElement('div');
-        rowContainer.className = 
-            speaker === "1" ? "row-left" : "row-right";
+        if (speaker === "1") {
+            rowContainer.className = "row-left";
+        } else if (speaker === "2") {
+            rowContainer.className = "row-right";
+        } else {
+            // Neutral should not force left or right yet
+            // It should visually behave like a neutral row
+            rowContainer.className = "row-neutral";
+        }
 
         const avatar = document.createElement('img');
         avatar.className = 'avatar';
@@ -335,37 +368,69 @@ function handleRowDrop(e) {
 
         // Add the first bubble
         messageGroup.appendChild(draggedElement);
-        draggedElement.classList.remove("bank-left", "bank-right");
-        draggedElement.classList.add(
-            speaker === "1" ? "chat-left" : "chat-right"
-);
+        draggedElement.classList.remove("bank-left", "bank-right", "chat-left", "chat-right");
+
+        if (speaker === "neutral") {
+            draggedElement.classList.add("chat-neutral");
+        } else {
+            draggedElement.classList.add(
+                speaker === "1" ? "chat-left" : "chat-right"
+            );
+        }
 
         // Create next new dotted row
         createBlankRow();
 
     } else {
-      // Row is already filled → ensure speakers match
-      const rowSpeaker = slot.dataset.speaker;        // assigned when first bubble dropped
-      const bubbleSpeaker = draggedElement.dataset.speaker;
+      let rowSpeaker = slot.dataset.speaker;
+      let bubbleSpeaker = draggedElement.dataset.speaker;
 
-      if (rowSpeaker !== bubbleSpeaker) {
-          // Reject incompatible bubble → return to bank
+      // CASE A — row is unset AND bubble is real-speaker → lock row
+      if (rowSpeaker === "unset" && bubbleSpeaker !== "neutral") {
+          slot.dataset.speaker = bubbleSpeaker; // lock row
+          rowSpeaker = bubbleSpeaker;
+      }
+
+      // CASE B — row has a speaker and bubble is real-speaker but wrong side → reject
+      if (bubbleSpeaker !== "neutral" && rowSpeaker !== "unset" && bubbleSpeaker !== rowSpeaker) {
           const bank = document.getElementById("sentence-bank");
           bank.appendChild(draggedElement);
-
           return;
-    }
+      }
 
-    // Speakers match → add bubble to the row
-    const group = slot.querySelector(".message-group");
-    draggedElement.classList.remove("bank-left", "bank-right");
-    draggedElement.classList.add(
-      slot.dataset.speaker === "1" ? "chat-left" : "chat-right"
-    );
+      // === ACCEPTED CASES ===
+      // bubbleSpeaker === rowSpeaker OR bubbleSpeaker is neutral OR row was unset
+
+      const group = slot.querySelector(".message-group");
+
+      // Remove bank styling
+      draggedElement.classList.remove(
+        "bank-left", "bank-right",
+        "chat-left", "chat-right",
+        "chat-neutral",
+        "bank-neutral"
+      );
+
+      // ⭐ NEUTRAL bubbles always stay neutral, regardless of rowSpeaker
+      if (draggedElement.dataset.speaker === "neutral") {
+          draggedElement.classList.remove("chat-left", "chat-right");
+          draggedElement.classList.add("chat-neutral");
+      } else {
+          // Apply chat-left/right only for real speakers
+          if (rowSpeaker === "1") {
+              draggedElement.classList.add("chat-left");
+              draggedElement.classList.remove("chat-right");
+          } else if (rowSpeaker === "2") {
+              draggedElement.classList.add("chat-right");
+              draggedElement.classList.remove("chat-left");
+          }
+      }
+
+
     group.appendChild(draggedElement);
-
-  }
+    }
 }
+
 
 function showDialogue() {
   enterActivityMode();
@@ -384,6 +449,11 @@ function showDialogue() {
     d => d.unit === currentUnit && d.activity === currentActivity
   );
 
+  // Compute previous activities within this unit
+  previousActivities = data.filter(d =>
+      d.unit === currentUnit && d.activity < currentActivity
+  );
+
   originalLines = JSON.parse(JSON.stringify(entry.lines));
 
   // shuffle a copy so originalLines stays correct
@@ -394,18 +464,50 @@ function showDialogue() {
     const div = createSentenceDiv(line);
     bank.appendChild(div);
   });
+
+  // Remove old badge (if any)
+  const oldTrash = document.getElementById("trash-badge");
+  if (oldTrash) oldTrash.remove();
+
+  // Create new badge
+  const trash = document.createElement("div");
+  trash.id = "trash-badge";
+  trash.innerHTML = '<span class="material-icons">delete</span>';
+
+  bank.appendChild(trash);
+
+  // Enable drag-drop on trash badge
+  trash.addEventListener("dragover", e => {
+      e.preventDefault();
+      e.stopPropagation();   // ⭐ IMPORTANT
+  });
+
+  trash.addEventListener("drop", e => {
+      e.preventDefault();
+      e.stopPropagation();   // ⭐ IMPORTANT
+      handleTrashDrop(e);
+  });
 }
 
 function showActivityButtons(show) {
   document.getElementById("btn-save").style.display = show ? "inline-block" : "none";
   document.getElementById("btn-reset").style.display = show ? "inline-block" : "none";
+  document.getElementById("btn-prev-activities").style.display = show ? "inline-block" : "none";
+
 }
 
+function handleTrashDrop(e) {
+    if (!draggedElement) return;
 
-function editWord(el){
-  const newWord=prompt("Enter your word:");
-  if(newWord) el.textContent=newWord;
+    // Only delete neutral bubbles
+    if (draggedElement.dataset.speaker === "neutral") {
+        draggedElement.remove();
+    } else {
+        // Put speaker bubbles back into bank
+        document.getElementById("sentence-bank").appendChild(draggedElement);
+    }
 }
+
 
 
 function saveScene() {
@@ -435,6 +537,54 @@ function saveScene() {
   a.click();
 }
 
+function openPreviousActivitiesPopup() {
+    const prevActivities = document.getElementById("prev-activities-popup");
+    const list = document.getElementById("activities-popup-list");
+    list.innerHTML = "";
+
+    if (previousActivities.length === 0) {
+        list.innerHTML = "<p>No previous activities available.</p>";
+    } else {
+        previousActivities.forEach(act => {
+            const header = document.createElement("h4");
+            header.textContent = `Activity ${act.activity}`;
+            list.appendChild(header);
+
+            act.lines.forEach(line => {
+                const option = document.createElement("div");
+                option.className = "prev-option";
+                option.textContent = line.text; // display only sentence text
+
+                option.onclick = () => {
+                  const newBubble = createSentenceDiv(line);
+
+                  // OVERRIDE speaker → make this a neutral bubble
+                  newBubble.dataset.speaker = "neutral";
+
+                  // Remove any coloring from old side
+                  newBubble.classList.remove("bank-left", "bank-right");
+
+                  // Apply a neutral style for sentence bank
+                  newBubble.classList.add("bank-neutral");
+
+                  document.getElementById("sentence-bank").appendChild(newBubble);
+
+                  closePreviousActivitiesPopup();
+                };
+
+                list.appendChild(option);
+            });
+        });
+    }
+
+    prevActivities.classList.remove("hidden");
+}
+
+function closePreviousActivitiesPopup() {
+  const popup = document.getElementById("prev-activities-popup");
+  popup.classList.add("hidden");
+}
+
 function resetActivity() {
   const left = document.getElementById('workspace-left');
   const bank = document.getElementById('sentence-bank');
@@ -456,15 +606,25 @@ window.onload = () => {
   document.getElementById('btn-home').onclick = showMainMenu;
   document.getElementById('btn-reset').onclick = resetActivity;
   document.getElementById('btn-save').onclick = saveScene;
+  document.getElementById("btn-prev-activities").onclick = openPreviousActivitiesPopup;
+  document.getElementById('activities-popup-close').onclick = closePreviousActivitiesPopup;
+
+  document.getElementById("prev-activities-popup").onclick = e => {
+    if (e.target.id === "prev-activities-popup") {
+        closePreviousActivitiesPopup();
+    }
+  };
 
   const left = document.getElementById("workspace-left");
   const bank = document.getElementById("sentence-bank");
 
-  //left.addEventListener("dragover", e => e.preventDefault());
   bank.addEventListener("dragover", e => e.preventDefault());
-
-  //left.addEventListener("drop", handleDrop);
   bank.addEventListener("drop", handleDrop);
 
+
+  
+  
   showMainMenu();
-};
+
+  };
+
