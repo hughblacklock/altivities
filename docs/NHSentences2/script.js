@@ -655,34 +655,213 @@ function handleTrashDrop(e) {
     }
 }
 
+function exportOrderedCSV() {
+    const rows = Array.from(document.querySelectorAll('.conversation-slot.filled'));
 
+    const output = [];
 
-function saveScene() {
-  const studentName = prompt("Enter your name:");
-  if (!studentName) return;
+    rows.forEach((slot, rowIndex) => {
+        const group = slot.querySelector('.message-group');
+        if (!group) return;
 
-  const today = new Date();
-  const dateStr = today.toISOString().slice(0,10).replace(/-/g,"");
+        const bubbles = Array.from(group.querySelectorAll('.dialogue'));
 
-  const filename = `${dateStr}_${studentName}_${currentSet}_U${currentUnit}_A${currentActivity}`;
+        bubbles.forEach((bubble, bubbleIndex) => {
+            const speaker = bubble.dataset.speaker || "";
+            const text = bubble.innerText.trim().replace(/\s+/g, " ");
 
-  // Screenshot the ACTIVITY AREA (top 90%)
-  html2canvas(document.getElementById('activity-container')).then(canvas => {
-    const link = document.createElement('a');
-    link.download = `${filename}.png`;
-    link.href = canvas.toDataURL();
-    link.click();
-  });
+            output.push({
+                row: rowIndex + 1,
+                order: bubbleIndex + 1,
+                speaker,
+                text
+            });
+        });
+    });
 
-  // CSV Export (optional if you're using it)
-  const lines = [...document.querySelectorAll('.dialogue')].map(el => el.innerText);
-  const csv = lines.map(l => `"${l.replace(/"/g, '""')}"`).join("\n");
-  const blob = new Blob([csv], { type: 'text/csv' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `${filename}.csv`;
-  a.click();
+    // Convert to CSV
+    let csv = `"Row","Order","Speaker","Text"\n`;
+    output.forEach(row => {
+        csv += `"${row.row}","${row.order}","${row.speaker}","${row.text.replace(/"/g, '""')}"\n`;
+    });
+
+    return csv;
 }
+
+
+
+async function saveScene() {
+    const studentName = prompt("Enter your name:");
+    if (!studentName) return;
+
+    const today = new Date();
+    const dateStr = today.toISOString().slice(0, 10).replace(/-/g, "");
+
+    const filename = `${dateStr}_${studentName}_${currentSet}_U${currentUnit}_A${currentActivity}`;
+    const workspace = document.getElementById("workspace-left");
+
+    // -------------------------------------------------------
+    // 1. CREATE TEMPORARY METADATA HEADER (normal flow)
+    // -------------------------------------------------------
+    const meta = document.createElement("div");
+    meta.id = "screenshot-meta";
+    meta.style.width = "100%";
+    meta.style.padding = "6px 12px";
+    meta.style.background = "#ffffff";
+    meta.style.fontWeight = "bold";
+    meta.style.fontSize = "16px";
+    meta.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)";
+    meta.style.marginBottom = "10px";
+
+    meta.textContent = `${studentName} – ${currentSet.toUpperCase()} U${currentUnit} A${currentActivity}`;
+    workspace.prepend(meta);
+
+    // -------------------------------------------------------
+    // 2. TAKE A HIGH-RES SCREENSHOT OF WORKSPACE ONLY
+    // -------------------------------------------------------
+    const canvas = await html2canvas(workspace, {
+        scale: 2,
+        backgroundColor: "#ffffff"
+    });
+
+    meta.remove(); // Restore layout
+
+    // Convert screenshot to JPEG for PDF
+    const imgData = canvas.toDataURL("image/jpeg", 0.9);
+
+    // -------------------------------------------------------
+    // 3. EXTRACT ORDERED TRANSCRIPT DATA
+    // -------------------------------------------------------
+    const rows = Array.from(document.querySelectorAll('.conversation-slot.filled'));
+    const transcript = [];
+
+    rows.forEach((slot, rowIndex) => {
+        const group = slot.querySelector('.message-group');
+        if (!group) return;
+
+        const bubbles = Array.from(group.querySelectorAll('.dialogue'));
+        const rowSpeaker = slot.dataset.speaker || "neutral";
+
+        bubbles.forEach((bubble, bubbleIndex) => {
+            transcript.push({
+                row: rowIndex + 1,
+                order: bubbleIndex + 1,
+                speaker: bubble.dataset.speaker || "neutral",
+                text: bubble.innerText.trim().replace(/\s+/g, " ")
+            });
+        });
+    });
+
+    // -------------------------------------------------------
+    // 4. CREATE PDF (3 pages)
+    // -------------------------------------------------------
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({
+        unit: "pt",
+        format: "a4"
+    });
+
+    const pageWidth = pdf.internal.pageSize.getWidth();
+
+    // =======================================================
+    // PAGE 1 — Screenshot Page
+    // =======================================================
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(16);
+
+    pdf.text(`Student: ${studentName}`, 40, 40);
+    pdf.text(`Activity: ${currentSet.toUpperCase()} – Unit ${currentUnit} – Activity ${currentActivity}`, 40, 65);
+    pdf.text(`Date: ${today.toLocaleDateString()}`, 40, 90);
+
+    pdf.setLineWidth(1);
+    pdf.line(40, 105, pageWidth - 40, 105);
+
+    pdf.setFontSize(18);
+    pdf.text("STUDENT DIALOGUE ARRANGEMENT", 40, 140);
+
+    // Fit screenshot to page width
+    const imgWidth = pageWidth - 80;
+    const aspect = canvas.height / canvas.width;
+    const imgHeight = imgWidth * aspect;
+
+    pdf.addImage(imgData, "JPEG", 40, 160, imgWidth, imgHeight);
+
+    // =======================================================
+    // PAGE 2 — Transcript Page
+    // =======================================================
+    pdf.addPage();
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(18);
+    pdf.text("DIALOGUE TRANSCRIPT (ORDERED)", 40, 50);
+
+    pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(12);
+
+    let y = 80;
+    let currentRow = -1;
+
+    transcript.forEach(item => {
+        if (item.row !== currentRow) {
+            currentRow = item.row;
+            y += 20;
+            pdf.setFont("helvetica", "bold");
+            pdf.text(`Row ${item.row} — Speaker ${item.speaker}`, 40, y);
+            y += 18;
+            pdf.setFont("helvetica", "normal");
+        }
+
+        const textLine = `${item.order}. ${item.text}`;
+        pdf.text(textLine, 60, y);
+        y += 16;
+
+        // Prevent overflow
+        if (y > 760) {
+            pdf.addPage();
+            y = 50;
+        }
+    });
+
+    // =======================================================
+    // PAGE 3 — Summary & Rubric Page
+    // =======================================================
+    pdf.addPage();
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(18);
+    pdf.text("SUMMARY & RUBRIC", 40, 50);
+
+    const totalRows = rows.length;
+    const totalBubbles = transcript.length;
+    const totalDynamic = transcript.filter(t => t.text.includes("____") === false).length;
+
+    pdf.setFontSize(14);
+    pdf.text("Summary", 40, 90);
+
+    pdf.setFontSize(12);
+    pdf.text(`Total Rows: ${totalRows}`, 40, 120);
+    pdf.text(`Total Bubbles Used: ${totalBubbles}`, 40, 140);
+    pdf.text(`Dynamic blanks filled: ${totalDynamic}`, 40, 160);
+
+    pdf.setFontSize(14);
+    pdf.text("Rubric", 40, 210);
+
+    pdf.setFontSize(12);
+    pdf.text("□ Correct order of lines", 40, 240);
+    pdf.text("□ Correct speaker assignment", 40, 260);
+    pdf.text("□ Correct content in blanks", 40, 280);
+    pdf.text("□ Used full sentences", 40, 300);
+
+    pdf.setFontSize(14);
+    pdf.text("Teacher Notes:", 40, 350);
+
+    pdf.setLineWidth(0.5);
+    pdf.rect(40, 370, pageWidth - 80, 200);
+
+    // -------------------------------------------------------
+    // 5. SAVE PDF
+    // -------------------------------------------------------
+    pdf.save(`${filename}.pdf`);
+}
+
 
 function openPreviousActivitiesPopup() {
     const prevActivities = document.getElementById("prev-activities-popup");
