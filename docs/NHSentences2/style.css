@@ -352,3 +352,12 @@ button:hover {
   opacity: 1;
   background: #ff4444;
 }
+
+.insert-marker {
+  width: 4px;
+  height: 32px;
+  background: rgba(0,0,0,0.45);
+  border-radius: 2px;
+  align-self: center;
+  display: inline-block;
+}

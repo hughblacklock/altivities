@@ -5,6 +5,144 @@ let data = {};
 let dragSrc = null;
 let previousActivities = [];
 
+let insertMarker = null;
+
+// Create or reuse a single insert marker
+function getOrCreateInsertMarker() {
+    if (!insertMarker) {
+        insertMarker = document.createElement('div');
+        insertMarker.className = 'insert-marker';
+    }
+    return insertMarker;
+}
+
+function clearInsertMarker() {
+    if (insertMarker && insertMarker.parentElement) {
+        insertMarker.parentElement.removeChild(insertMarker);
+    }
+}
+
+// Decide where the marker should go inside a message-group
+function updateInsertMarker(e, group) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!draggedElement) return;
+
+    const bubbles = Array.from(group.querySelectorAll('.dialogue'));
+
+    const marker = getOrCreateInsertMarker();
+
+    // If no bubbles yet, put marker at the start
+    if (bubbles.length === 0) {
+        group.appendChild(marker);
+        return;
+    }
+
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+
+    // Find the closest bubble to the cursor (works with wrapping)
+    let closest = null;
+    let closestDist = Infinity;
+
+    bubbles.forEach(b => {
+        const rect = b.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const dx = mouseX - cx;
+        const dy = mouseY - cy;
+        const dist = dx*dx + dy*dy;
+        if (dist < closestDist) {
+            closestDist = dist;
+            closest = b;
+        }
+    });
+
+    if (!closest) {
+        group.appendChild(marker);
+        return;
+    }
+
+    const rect = closest.getBoundingClientRect();
+    const midX = rect.left + rect.width / 2;
+
+    // Insert marker before or after the closest bubble
+    if (mouseX < midX) {
+        group.insertBefore(marker, closest);
+    } else {
+        if (closest.nextSibling) {
+            group.insertBefore(marker, closest.nextSibling);
+        } else {
+            group.appendChild(marker);
+        }
+    }
+}
+
+function setupGroupReorder(messageGroup) {
+    // Handle reordering and inserting into an existing row
+    messageGroup.addEventListener('dragover', function(e) {
+        if (!draggedElement) return;
+        updateInsertMarker(e, messageGroup);
+    });
+
+    messageGroup.addEventListener('dragleave', function(e) {
+        // If we leave the whole group, you *can* clear the marker,
+        // but it's optional. Leaving it often feels nicer.
+    });
+
+    messageGroup.addEventListener('drop', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!draggedElement) return;
+
+        const slot = messageGroup.closest('.conversation-slot');
+        let rowSpeaker = slot.dataset.speaker || "unset";
+        const bubbleSpeaker = draggedElement.dataset.speaker;
+
+        // If row unset and bubble has real speaker → lock row
+        if (rowSpeaker === "unset" && bubbleSpeaker !== "neutral") {
+            rowSpeaker = bubbleSpeaker;
+            slot.dataset.speaker = bubbleSpeaker;
+        }
+
+        // Reject conflicting speaker into the bank
+        if (bubbleSpeaker !== "neutral" &&
+            rowSpeaker !== "unset" &&
+            bubbleSpeaker !== rowSpeaker) {
+
+            const bank = document.getElementById("sentence-bank");
+            bank.appendChild(draggedElement);
+            clearInsertMarker();
+            return;
+        }
+
+        // Reset classes
+        draggedElement.classList.remove(
+            "bank-left", "bank-right", "bank-neutral",
+            "chat-left", "chat-right", "chat-neutral"
+        );
+
+        // Apply row styling
+        if (bubbleSpeaker === "neutral") {
+            draggedElement.classList.add("chat-neutral");
+        } else if (rowSpeaker === "1") {
+            draggedElement.classList.add("chat-left");
+        } else if (rowSpeaker === "2") {
+            draggedElement.classList.add("chat-right");
+        }
+
+        const marker = insertMarker;
+        if (marker && marker.parentElement === messageGroup) {
+            messageGroup.insertBefore(draggedElement, marker);
+        } else {
+            messageGroup.appendChild(draggedElement);
+        }
+
+        clearInsertMarker();
+    });
+}
+
+
 
 async function loadData(set) {
   const res = await fetch(`data/${set}.json`);
@@ -315,25 +453,24 @@ function createBlankRow() {
 
 function handleRowDrop(e) {
     e.preventDefault();
-    e.stopPropagation(); //stop 
+    e.stopPropagation();
     if (!draggedElement) return;
 
     const slot = this;
 
-    // If this is the first time something is dropped into this row:
+    // ============================
+    // FIRST TIME FILLING THIS ROW
+    // ============================
     if (slot.dataset.empty === "true") {
-        
+
         slot.classList.remove("dotted");
         slot.dataset.empty = "false";
         slot.classList.add("filled");
 
-        // Create avatar + message-group
         const speaker = draggedElement.dataset.speaker;
-        
-        //slot.dataset.speaker = speaker;
-
-        // Neutral first = row not decided yet
+        // Row inherits speaker UNLESS bubble is neutral
         slot.dataset.speaker = (speaker === "neutral") ? "unset" : speaker;
+        let rowSpeaker = slot.dataset.speaker;
 
         const avatarSrc = draggedElement.dataset.avatar;
 
@@ -343,8 +480,6 @@ function handleRowDrop(e) {
         } else if (speaker === "2") {
             rowContainer.className = "row-right";
         } else {
-            // Neutral should not force left or right yet
-            // It should visually behave like a neutral row
             rowContainer.className = "row-neutral";
         }
 
@@ -356,6 +491,7 @@ function handleRowDrop(e) {
         messageGroup.className = 'message-group';
 
         slot.innerHTML = ""; // Clear dotted slot
+
         if (speaker === "1") {
             rowContainer.appendChild(avatar);
             rowContainer.appendChild(messageGroup);
@@ -366,70 +502,76 @@ function handleRowDrop(e) {
 
         slot.appendChild(rowContainer);
 
-        // Add the first bubble
-        messageGroup.appendChild(draggedElement);
-        draggedElement.classList.remove("bank-left", "bank-right", "chat-left", "chat-right");
+        // Attach reorder behaviour to this new group
+        setupGroupReorder(messageGroup);
 
-        if (speaker === "neutral") {
+        // Style the first bubble
+        draggedElement.classList.remove(
+            "bank-left", "bank-right", "bank-neutral",
+            "chat-left", "chat-right", "chat-neutral"
+        );
+
+        const bubbleSpeaker = draggedElement.dataset.speaker;
+        if (bubbleSpeaker === "neutral") {
             draggedElement.classList.add("chat-neutral");
-        } else {
-            draggedElement.classList.add(
-                speaker === "1" ? "chat-left" : "chat-right"
-            );
+        } else if (rowSpeaker === "1") {
+            draggedElement.classList.add("chat-left");
+        } else if (rowSpeaker === "2") {
+            draggedElement.classList.add("chat-right");
         }
 
-        // Create next new dotted row
+        messageGroup.appendChild(draggedElement);
+
+        // Spawn the next empty row below
         createBlankRow();
-
-    } else {
-      let rowSpeaker = slot.dataset.speaker;
-      let bubbleSpeaker = draggedElement.dataset.speaker;
-
-      // CASE A — row is unset AND bubble is real-speaker → lock row
-      if (rowSpeaker === "unset" && bubbleSpeaker !== "neutral") {
-          slot.dataset.speaker = bubbleSpeaker; // lock row
-          rowSpeaker = bubbleSpeaker;
-      }
-
-      // CASE B — row has a speaker and bubble is real-speaker but wrong side → reject
-      if (bubbleSpeaker !== "neutral" && rowSpeaker !== "unset" && bubbleSpeaker !== rowSpeaker) {
-          const bank = document.getElementById("sentence-bank");
-          bank.appendChild(draggedElement);
-          return;
-      }
-
-      // === ACCEPTED CASES ===
-      // bubbleSpeaker === rowSpeaker OR bubbleSpeaker is neutral OR row was unset
-
-      const group = slot.querySelector(".message-group");
-
-      // Remove bank styling
-      draggedElement.classList.remove(
-        "bank-left", "bank-right",
-        "chat-left", "chat-right",
-        "chat-neutral",
-        "bank-neutral"
-      );
-
-      // ⭐ NEUTRAL bubbles always stay neutral, regardless of rowSpeaker
-      if (draggedElement.dataset.speaker === "neutral") {
-          draggedElement.classList.remove("chat-left", "chat-right");
-          draggedElement.classList.add("chat-neutral");
-      } else {
-          // Apply chat-left/right only for real speakers
-          if (rowSpeaker === "1") {
-              draggedElement.classList.add("chat-left");
-              draggedElement.classList.remove("chat-right");
-          } else if (rowSpeaker === "2") {
-              draggedElement.classList.add("chat-right");
-              draggedElement.classList.remove("chat-left");
-          }
-      }
-
-
-    group.appendChild(draggedElement);
+        return;
     }
+
+    // ============================
+    // EXISTING ROW (ALREADY FILLED)
+    // Dropped on the slot background (not between bubbles)
+    // → append at the end of this row
+    // ============================
+
+    const messageGroup = slot.querySelector(".message-group");
+    if (!messageGroup) return;
+
+    let rowSpeaker = slot.dataset.speaker || "unset";
+    const bubbleSpeaker = draggedElement.dataset.speaker;
+
+    // Row can lock to a real speaker if currently unset
+    if (rowSpeaker === "unset" && bubbleSpeaker !== "neutral") {
+        rowSpeaker = bubbleSpeaker;
+        slot.dataset.speaker = bubbleSpeaker;
+    }
+
+    // Reject conflicting speaker into the bank
+    if (bubbleSpeaker !== "neutral" &&
+        rowSpeaker !== "unset" &&
+        bubbleSpeaker !== rowSpeaker) {
+
+        const bank = document.getElementById("sentence-bank");
+        bank.appendChild(draggedElement);
+        return;
+    }
+
+    // Move bubble into the group at the end
+    draggedElement.classList.remove(
+        "bank-left", "bank-right", "bank-neutral",
+        "chat-left", "chat-right", "chat-neutral"
+    );
+
+    if (bubbleSpeaker === "neutral") {
+        draggedElement.classList.add("chat-neutral");
+    } else if (rowSpeaker === "1") {
+        draggedElement.classList.add("chat-left");
+    } else if (rowSpeaker === "2") {
+        draggedElement.classList.add("chat-right");
+    }
+
+    messageGroup.appendChild(draggedElement);
 }
+
 
 
 function showDialogue() {
