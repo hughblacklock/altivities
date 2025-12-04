@@ -1,0 +1,224 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #f6f6f6;
+    font-family: Arial, sans-serif;
+    user-select: none;
+}
+
+.activity-container {
+    position: relative;
+    width: 1024px;     /* FIXED WIDTH */
+    height: 768px;     /* FIXED HEIGHT */
+    margin: 0 auto;    /* center horizontally */
+    overflow: hidden;
+    background: white;
+}
+
+/* Right-hand vertical overlay strip */
+.overlay-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;       /* stays fixed */
+    height: 100%;       /* fills 768px height */
+    background: #eee;
+    border-left: 2px solid #ccc;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    padding: 6px;
+    overflow-y: auto;
+    justify-items: center;
+}
+
+
+/* Bottom horizontal overlay strip */
+.overlay-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 210px; /* space for right overlay */
+    height: 200px;
+    background: #eee;
+    border-top: 2px solid #ccc;
+    padding: 6px;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 90px); /* each thumbnail width */
+    grid-auto-rows: 90px;        /* two exact rows of 90px thumbnails */
+    grid-auto-flow: column;      /* fill down each column before moving right */
+
+    gap: 6px;
+    overflow-y: auto;            /* scroll vertically if needed */
+    overflow-x: hidden;          /* prevent horizontal scroll */
+}
+
+
+.overlay-right,
+.overlay-bottom {
+    z-index: 2000;
+    grid-auto-rows: 94px;
+    grid-auto-columns: 94px;
+}
+
+.play-area {
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    width: 824px;
+    height: 628px;
+    z-index: 1000;
+
+    background-image: url("images/background.png"); /* NEW */
+    background-size: cover;     /* scale to cover entire area */
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.play-area.scaled {
+    transform-origin: top left;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5000;
+}
+
+.play-wrapper {
+    position: relative;
+    flex: 1;
+    overflow: visible;  /* allow scaled content to show */
+}
+
+.thumb {
+    width: 90px;
+    height: 90px;
+    margin: 0;
+    object-fit: contain;
+    border: 2px solid #aaa;
+    background: white;
+    border-radius: 6px;
+    cursor: grab;
+}
+
+.thumb:active {
+    cursor: grabbing;
+}
+
+
+
+.placed-item {
+    position: absolute;
+    cursor: grab;
+    pointer-events: auto; /* must allow dragging */
+    z-index: 1100; /* below overlays but above playarea background */
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.placed-item:active {
+    cursor: grabbing;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.8); /* blue glow */
+
+}
+
+.tool-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-right: 10px; /* spacing before scenery thumbnails start */
+}
+
+.tool-btn {
+    width: 90px;              /* same width as thumbnail */
+    height: 30px;             /* your requested height */
+    margin: 10px 0;           /* pad → button → pad → button → pad */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 14px;
+    background: white;
+    border: 2px solid #aaa;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.tool-btn:hover {
+    background: #f2f2f2;
+}
+
+.material-symbols-outlined {
+    font-size: 18px;
+    vertical-align: middle;
+}
+
+/* Hide overlays when in fullscreen */
+.overlay-right.hidden,
+.overlay-bottom.hidden {
+    display: none;
+    touch-action: auto;
+}
+
+/* Return button styling */
+.return-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 120;
+    height: 30px;
+    background: white;
+    border: 2px solid #666;
+    border-radius: 10px;
+    font-size: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    z-index: 6000; /* above fullscreen area */
+}
+
+.return-btn:hover {
+    background: #f3f3f3;
+}
+
+/* When enlarged: play area sits on top and is scaled */
+.play-area.enlarged {
+    position: absolute;      /* float it over everything */
+    top: 0;
+    left: 0;
+    transform-origin: top left;
+    z-index: 3000;           /* above overlays (which are hidden anyway) */
+}
+
+/* Disable all interaction while in presentation mode */
+.play-area.no-interaction,
+.play-area.no-interaction * {
+    pointer-events: none;
+}
+
+.reveal-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 240px; /* returnBtn is at right:20px, so this sits just left of it */
+    width: 120px;
+    height: 30px;
+    background: white;
+    border: 2px solid #666;
+    border-radius: 10px;
+    font-size: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    z-index: 6000; /* same as returnBtn */
+}
+.reveal-btn:hover {
+    background: #f3f3f3;
+}
+
+.placed-item, .thumb {
+    touch-action: auto;
+}
