@@ -224,7 +224,21 @@ document.addEventListener("pointerdown", (e) => {
         activeItem = target;
         isClone = false;
 
-        // thumbnail drag: start drag anywhere inside the thumb
+        // Create a lightweight floating drag preview
+        dragPreview = document.createElement("img");
+        dragPreview.src = target.src;
+        dragPreview.style.position = "fixed";
+        dragPreview.style.pointerEvents = "none";
+        dragPreview.style.width = "90px";              // same size as thumbnail
+        dragPreview.style.height = "90px";
+        dragPreview.style.objectFit = "contain";
+        dragPreview.style.zIndex = 5000;
+        dragPreview.style.border = "none";
+        dragPreview.style.background = "transparent";
+        dragPreview.style.opacity = "0.9";
+
+        document.body.appendChild(dragPreview);
+
         const rect = target.getBoundingClientRect();
         offsetX = e.clientX - rect.left;
         offsetY = e.clientY - rect.top;
@@ -232,6 +246,7 @@ document.addEventListener("pointerdown", (e) => {
         e.preventDefault();
         return;
     }
+
 
     // Placed items → move them
     if (target.classList.contains("placed-item")) {
@@ -258,11 +273,11 @@ document.addEventListener("pointermove", (e) => {
     const y = e.clientY;
 
     // while dragging a thumbnail: drag the thumbnail itself visually
-    if (!isClone) {
-        activeItem.style.position = "fixed";
-        activeItem.style.left = (x - offsetX) + "px";
-        activeItem.style.top = (y - offsetY) + "px";
+    if (!isClone && dragPreview) {
+        dragPreview.style.left = (x - offsetX) + "px";
+        dragPreview.style.top  = (y - offsetY) + "px";
     }
+
 
     // while dragging a placed-item: drag it visually
     else {
@@ -370,7 +385,10 @@ document.addEventListener("click", (e) => {
    CLEANUP AFTER DRAG
 ------------------------------ */
 function cleanupAfterDrag() {
-
+    if (dragPreview) {
+        dragPreview.remove();
+        dragPreview = null;
+    }
     // Reset inline dragging-styles for thumbnails
     if (activeItem && activeItem.classList.contains("thumb")) {
         activeItem.style.position = "";
