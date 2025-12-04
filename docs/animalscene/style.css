@@ -39,7 +39,7 @@ body {
     bottom: 0;
     left: 0;
     right: 210px; /* space for right overlay */
-    height: 200px;
+    height: 130px;
     background: #eee;
     border-top: 2px solid #ccc;
     padding: 6px;
@@ -51,7 +51,7 @@ body {
 
     gap: 6px;
     overflow-y: auto;            /* scroll vertically if needed */
-    overflow-x: hidden;          /* prevent horizontal scroll */
+    overflow-x: auto;          /* prevent horizontal scroll */
 }
 
 
@@ -132,7 +132,7 @@ body {
 .tool-btn {
     width: 90px;              /* same width as thumbnail */
     height: 30px;             /* your requested height */
-    margin: 10px 0;           /* pad → button → pad → button → pad */
+    margin: 0px 0;           /* pad → button → pad → button → pad */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -153,12 +153,6 @@ body {
     vertical-align: middle;
 }
 
-/* Hide overlays when in fullscreen */
-.overlay-right.hidden,
-.overlay-bottom.hidden {
-    display: none;
-    touch-action: auto;
-}
 
 /* Return button styling */
 .return-btn {
