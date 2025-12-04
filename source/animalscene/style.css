@@ -39,21 +39,29 @@ body {
     bottom: 0;
     left: 0;
     right: 210px; /* space for right overlay */
-    height: 130px;
+    height: 100px;
     background: #eee;
     border-top: 2px solid #ccc;
     padding: 6px;
-
     display: grid;
     grid-template-columns: repeat(auto-fill, 90px); /* each thumbnail width */
     grid-auto-rows: 90px;        /* two exact rows of 90px thumbnails */
     grid-auto-flow: column;      /* fill down each column before moving right */
-
     gap: 6px;
     overflow-y: auto;            /* scroll vertically if needed */
     overflow-x: auto;          /* prevent horizontal scroll */
 }
 
+.scenery-strip {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    width: 710px;
+}
 
 .overlay-right,
 .overlay-bottom {
@@ -68,7 +76,7 @@ body {
     top: 0;
     left: 0;
     width: 824px;
-    height: 628px;
+    height: 658px;
     z-index: 1000;
 
     background-image: url("images/background.png"); /* NEW */

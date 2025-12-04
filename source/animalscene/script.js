@@ -10,6 +10,7 @@ const activityContainer = document.querySelector(".activity-container");
 const overlayRight = document.getElementById("overlayRight");
 const overlayBottom = document.getElementById("overlayBottom");
 const playArea = document.getElementById("playArea");
+const sceneryStrip = document.getElementById("sceneryStrip");
 
 const enlargeBtn = document.getElementById("enlargeBtn");
 const returnBtn = document.getElementById("returnBtn");
@@ -48,7 +49,7 @@ async function loadThumbnails() {
             img.className = "thumb";
             img.draggable = true;
             img.dataset.type = "env";
-            overlayBottom.appendChild(img);
+            sceneryStrip.appendChild(img);
         });
     } catch (err) {
         console.error("Error loading scenery:", err);
