@@ -1,0 +1,150 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #f6f6f6;
+    font-family: Arial, sans-serif;
+    user-select: none;
+}
+
+/* Use #game, not .game, and fix hv -> vw/vh */
+#game {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    
+    /* optional: center the map if it's smaller than the viewport */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+    background: #f6f6f6; /* or whatever */
+}
+
+#map {
+    position: relative;
+    width: 100vw;          /* fills window width */
+    max-width: 1200px;     /* optional cap so it doesn’t get enormous on big screens */
+    aspect-ratio: 16 / 9;  /* <- set this to your map image ratio, e.g. 1920 / 1080 */
+    
+    background-image: url("images/firstfloor.png");
+    background-size: 100% 100%;   /* fill the box exactly, no cropping */
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    overflow: hidden;
+}
+
+
+/* Player image */
+#player {
+    position: absolute;
+    width: 4%;               /* adjust to taste */
+    height: auto;
+    left: 86%;
+    top: 64%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+
+/* Room hotspots (click zones) */
+.room {
+    position: absolute;
+    width: 8%;
+    height: 10%;
+    cursor: pointer;
+    background: rgba(0, 255, 0, 0.2); /* temporary debug color, remove later */
+    pointer-events: auto;
+
+    /* ⬇️ This makes left/top be the CENTER of the box */
+    transform: translate(-50%, -50%);
+}
+
+
+/* Individual room areas for player interaction */
+.room[data-room="judo"] {
+    left: 11.8%;
+    top: 10.29%;
+}
+.room[data-room="1st"] {
+    left: 48.75%;
+    top: 9.55%;
+}
+.room[data-room="2nd"] {
+    left: 37.06%;
+    top: 9.55%;
+}
+.room[data-room="3rd"] {
+    left: 37.06%;
+    top: 9.55%;
+}
+.room[data-room="4th"] {
+    left: 27.24%;
+    top: 78.95%;
+}
+.room[data-room="5th"] {
+    left: 27.24%;
+    top: 78.95%;
+}
+.room[data-room="6th"] {
+    left: 39.35%;
+    top: 78.95%;
+}
+.room[data-room="wood"] {
+    left: 61.38%;
+    top: 9.55%;
+}
+.room[data-room="study1"] {
+    left: 5.01%;
+    top: 78.95%;
+}
+.room[data-room="study2"] {
+    left: 16.08%;
+    top: 78.95%;
+}
+.room[data-room="broad"] {
+    left: 47.39%;
+    top: 78.05%;
+}
+.room[data-room="print"] {
+    left: 52.09%;
+    top: 94.54%;
+}
+.room[data-room="nurse"] {
+    left: 58.98%;
+    top: 78.95%;
+}
+.room[data-room="principal"] {
+    left: 69.62%;
+    top: 78.95%;
+}
+.room[data-room="teacher"] {
+    left: 82.57%;
+    top: 78.95%;
+}
+.room[data-room="gym"] {
+    left: 2.19%;
+    top: 60.39%;
+}
+.room[data-room="stair1"] {
+    left: 78.08%;
+    top: 44.44%;
+}
+.room[data-room="stair2"] {
+    left: 26.41%;
+    top: 44.44%;
+}
+.room[data-room="restf"] {
+    left: 6.05%;
+    top: 42.58%;
+}
+.room[data-room="restm"] {
+    left: 17.95%;
+    top: 42.58%;
+}
+.room[data-room="library"] {
+    left: 50.73%;
+    top: 43.51%;
+}
+
