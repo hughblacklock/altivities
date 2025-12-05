@@ -11,7 +11,7 @@
     <body>
         <div id="game">
             <div id="map">
-                <img id="player" src="images/player.png" alt="player">
+                <img id="player" src="images/koapyon_down.png" alt="player">
                 <!-- 1st floor rooms -->
                 <div class="room" data-room="judo" data-floor="1"></div>
                 <div class="room" data-room="1st" data-floor="1"></div>
@@ -70,6 +70,16 @@
                     <p id="roomDescription"></p>
                 </div>
             </div>
+        </div>
+        <div id="targetPanel">
+            <button id="targetButton" type="button">
+                <span class="material-symbols-outlined">target</span>
+            </button>
+            <span id="targetLabel">No target</span>
+            <select id="targetSelect" class="hidden">
+                <option value="">Select a room…</option>
+                <!-- options will be filled by JS from ROOM_DATA -->
+            </select>
         </div>
 
         <!-- Load script AFTER the DOM elements so they exist -->
