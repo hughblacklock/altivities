@@ -39,7 +39,7 @@ body {
 /* Player image */
 #player {
     position: absolute;
-    width: 4%;               /* adjust to taste */
+    width: 10%;               /* adjust to taste */
     height: auto;
     left: 86%;
     top: 64%;
@@ -54,97 +54,306 @@ body {
     width: 8%;
     height: 10%;
     cursor: pointer;
-    background: rgba(0, 255, 0, 0.2); /* temporary debug color, remove later */
     pointer-events: auto;
-
     /* ⬇️ This makes left/top be the CENTER of the box */
     transform: translate(-50%, -50%);
 }
 
+/* separating the floors so I can see the areas
+   that player can collide with during testing 
+   remove later and move opacity into just room*/
+.room[data-floor="2"] {
+    background: rgba(255, 60, 0, 0.2); /* temporary debug color, remove later */
+    opacity: 0;
+}
+
+.room[data-floor="1"] {
+    background: rgba(51, 255, 0, 0.2); /* temporary debug color, remove later */
+    opacity: 0;
+}
 
 /* Individual room areas for player interaction */
 .room[data-room="judo"] {
     left: 11.8%;
     top: 10.29%;
+    height: 14%;
+    width: 18%;
 }
 .room[data-room="1st"] {
     left: 48.75%;
     top: 9.55%;
+    height: 15%;
+    width: 7.5%;
 }
 .room[data-room="2nd"] {
     left: 37.06%;
     top: 9.55%;
+    height: 15%;
+    width: 7.5%;
 }
 .room[data-room="3rd"] {
     left: 37.06%;
     top: 9.55%;
+    height: 15%;
+    width: 7.5%;
 }
 .room[data-room="4th"] {
     left: 27.24%;
     top: 78.95%;
+    height: 15%;
+    width: 7.5%;
 }
 .room[data-room="5th"] {
     left: 27.24%;
     top: 78.95%;
+    height: 15%;
+    width: 7.5%;
 }
 .room[data-room="6th"] {
     left: 39.35%;
     top: 78.95%;
+    height: 15%;
+    width: 7.5%;
 }
 .room[data-room="wood"] {
     left: 61.38%;
     top: 9.55%;
+    height: 15%;
+    width: 7.5%;
 }
 .room[data-room="study1"] {
     left: 5.01%;
     top: 78.95%;
+    height: 15%;
+    width: 7.5%;
 }
 .room[data-room="study2"] {
     left: 16.08%;
     top: 78.95%;
+    height: 15%;
+    width: 7.5%;
 }
 .room[data-room="broad"] {
     left: 47.39%;
     top: 78.05%;
+    height: 15%;
+    width: 2.5%;
 }
 .room[data-room="print"] {
     left: 52.09%;
     top: 94.54%;
+    height: 6%;
+    width: 9%;
 }
 .room[data-room="nurse"] {
     left: 58.98%;
     top: 78.95%;
+    height: 15%;
+    width: 7.5%;
 }
 .room[data-room="principal"] {
     left: 69.62%;
     top: 78.95%;
+    height: 15%;
+    width: 7.5%;
 }
 .room[data-room="teacher"] {
     left: 82.57%;
     top: 78.95%;
+    height: 15%;
+    width: 12%;
 }
 .room[data-room="gym"] {
-    left: 2.19%;
+    left: 0.0%;
     top: 60.39%;
+    height: 3%;
+    width: 2%;
 }
 .room[data-room="stair1"] {
     left: 78.08%;
     top: 44.44%;
+    height: 12%;
+    width: 3.5%;
 }
 .room[data-room="stair2"] {
     left: 26.41%;
     top: 44.44%;
+    height: 12%;
+    width: 3.5%;
 }
 .room[data-room="restf"] {
     left: 6.05%;
     top: 42.58%;
+    height: 11%;
+    width: 8%;
 }
 .room[data-room="restm"] {
     left: 17.95%;
     top: 42.58%;
+    height: 11%;
+    width: 8%;
 }
 .room[data-room="library"] {
     left: 50.73%;
     top: 43.51%;
+    height: 11%;
+    width: 8.5%;
+}
+.room[data-room="music"] {
+    left: 29.39%;
+    top: 8.99%;
+    width: 27%;
+    height: 11%;
+}
+.room[data-room="art"] {
+    left: 52.84%;
+    top: 8.99%;
+    width: 12%;
+    height: 13%;
+}
+.room[data-room="cloth"] {
+    left: 66.96%;
+    top: 8.99%;
+    width: 12%;
+    height: 13%;
+}
+.room[data-room="kitchen"] {
+    left: 82.39%;
+    top: 8.99%;
+    width: 12%;
+    height: 13%;
+}
+.room[data-room="library2"] {
+    left: 94.91%;
+    top: 44.31%;
+    width: 8%;
+    height: 50%;
+}
+.room[data-room="pc"] {
+    left: 82.68%;
+    top: 81.57%;
+    width: 12%;
+    height: 13%;
+}
+.room[data-room="3b"] {
+    left: 72.49%;
+    top: 80.54%;
+    width: 5%;
+    height: 13%;
+}
+.room[data-room="science"] {
+    left: 62.60%;
+    top: 80.54%;
+    width: 11.5%;
+    height: 13%;
+}
+.room[data-room="7th"] {
+    left: 23.50%;
+    top: 80.54%;
+    width: 11%;
+    height: 13%;
+}
+.room[data-room="8th"] {
+    left: 36.54%;
+    top: 80.54%;
+    width: 11%;
+    height: 13%;
+}
+.room[data-room="9th"] {
+    left: 49.78%;
+    top: 80.54%;
+    width: 11%;
+    height: 13%;
+}
+.room[data-room="english"] {
+    left: 4.51%;
+    top: 80.54%;
+    width: 8.0%;
+    height: 13%;
+}
+.room[data-room="restm2"] {
+    left: 8.00%;
+    top: 48.00%;
+    width: 12%;
+    height: 5.5%;
+}
+.room[data-room="restf2"] {
+    left: 8.00%;
+    top: 39.00%;
+    width: 12%;
+    height: 5.5%;
+}
+.room[data-room="court"] {
+    left: 65.79%;
+    top: 43.27%;
+    width: 15%;
+    height: 12%;
+}
+.room[data-room="air"] {
+    left: 43.38%;
+    top: 43.27%;
+    width: 25.5%;
+    height: 12%;
+}
+.room[data-room="midgirlchange"] {
+    left: 12.37%;
+    top: 80.54%;
+    width: 5.5%;
+    height: 13%;
+}
+.room[data-room="2ndfloorsink"] {
+    left: 7.42%;
+    top: 9.11%;
+    width: 11.8%;
+    height: 12.5%;
+}
+.room[data-room="1stteacherrest"] {
+    left: 78.58%;
+    top: 10.29%;
+    width: 19.8%;
+    height: 15%;
+}
+.room[data-room="storage"] {
+    left: 27.37%;
+    top: 10.29%;
+    width: 6.3%;
+    height: 15%;
+}
+/* Individual room areas end here!!! */
+
+#roomOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
 }
 
+#roomOverlay.hidden {
+    display: none;
+}
+
+#roomOverlayContent {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: auto;
+    position: relative;
+}
+
+#roomOverlayClose {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+}
+
+#roomImage {
+    max-width: 100%;
+    display: block;
+    margin: 1rem 0;
+}

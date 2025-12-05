@@ -29,16 +29,47 @@
                 <div class="room" data-room="principal" data-floor="1"></div>
                 <div class="room" data-room="teacher" data-floor="1"></div>
                 <div class="room" data-room="gym" data-floor="1"></div>
-                <div class="room" data-room="stair1" data-floor="both"></div>
-                <div class="room" data-room="stair2" data-floor="both"></div>
                 <div class="room" data-room="restf" data-floor="1"></div>
                 <div class="room" data-room="restm" data-floor="1"></div>
                 <div class="room" data-room="library" data-floor="1"></div>
-
+                
                 <!-- 2nd floor rooms -->
+                <div class="room" data-room="music" data-floor="2"></div>
+                <div class="room" data-room="art" data-floor="2"></div>
+                <div class="room" data-room="cloth" data-floor="2"></div>
+                <div class="room" data-room="kitchen" data-floor="2"></div>
+                <div class="room" data-room="library2" data-floor="2"></div>
+                <div class="room" data-room="pc" data-floor="2"></div>
+                <div class="room" data-room="3b" data-floor="2"></div>
+                <div class="room" data-room="science" data-floor="2"></div>
+                <div class="room" data-room="7th" data-floor="2"></div>
+                <div class="room" data-room="8th" data-floor="2"></div>
+                <div class="room" data-room="9th" data-floor="2"></div>
+                <div class="room" data-room="english" data-floor="2"></div>
+                <div class="room" data-room="restm2" data-floor="2"></div>
+                <div class="room" data-room="restf2" data-floor="2"></div>
+                <div class="room" data-room="air" data-floor="2"></div>
+
+                <!-- Both floors -->
+                <div class="room" data-room="stair1" data-floor="both"></div>
+                <div class="room" data-room="stair2" data-floor="both"></div>
+                <div class="room" data-room="court" data-floor="both"></div>
+                
+                <!-- No entry rooms -->
+                <div class="room" data-room="midgirlchange" data-floor="2"></div>
+                <div class="room" data-room="2ndfloorsink" data-floor="2"></div>
+                <div class="room" data-room="1stteacherrest" data-floor="1"></div>
+                <div class="room" data-room="storage" data-floor="1"></div>
 
             </div>
-
+            <div id="roomOverlay" class="hidden">
+                <div id="roomOverlayContent">
+                    <span id="roomOverlayClose" class="material-symbols-outlined">close</span>
+                    <h2 id="roomTitle"></h2>
+                    <img id="roomImage" alt="">
+                    <p id="roomDescription"></p>
+                </div>
+            </div>
         </div>
 
         <!-- Load script AFTER the DOM elements so they exist -->
