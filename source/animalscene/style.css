@@ -39,7 +39,7 @@ body {
     bottom: 0;
     left: 0;
     right: 210px; /* space for right overlay */
-    height: 100px;
+    height: 110px;
     background: #eee;
     border-top: 2px solid #ccc;
     padding: 6px;
@@ -61,6 +61,7 @@ body {
     overflow-y: hidden;
     white-space: nowrap;
     width: 710px;
+    height: 110px;
 }
 
 .overlay-right,
@@ -104,6 +105,7 @@ body {
     height: 90px;
     margin: 0;
     object-fit: contain;
+    flex-shrink: 0;
     border: 2px solid #aaa;
     background: white;
     border-radius: 6px;
@@ -223,4 +225,14 @@ body {
 
 .placed-item, .thumb {
     touch-action: auto;
+}
+
+body.dragging {
+    touch-action: none !important;
+    overflow: hidden;           /* optional: stops bounce scroll on iOS */
+}
+
+.thumb,
+.placed-item {
+    touch-action: none;
 }

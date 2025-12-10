@@ -220,6 +220,10 @@ saveBtn.addEventListener("click", downloadSceneJSON);
 document.addEventListener("pointerdown", (e) => {
     const target = e.target;
 
+    document.body.classList.add("dragging");
+    e.preventDefault();
+
+
     // Thumbnails → will create clones
     if (target.classList.contains("thumb")) {
         activeItem = target;
@@ -268,6 +272,10 @@ document.addEventListener("pointerdown", (e) => {
    DRAG MOVE
 ------------------------------ */
 document.addEventListener("pointermove", (e) => {
+    if (activeItem) {
+        e.preventDefault();   // block scroll ONLY during drag
+    }
+    
     if (!activeItem) return;
 
     const x = e.clientX;
@@ -296,6 +304,7 @@ document.addEventListener("pointermove", (e) => {
    END DRAG (DROP)
 ------------------------------ */
 document.addEventListener("pointerup", (e) => {
+    document.body.classList.remove("dragging");
     if (!activeItem) return;
 
     const x = e.clientX;
