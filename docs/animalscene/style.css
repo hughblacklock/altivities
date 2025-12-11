@@ -76,7 +76,7 @@ body {
     overflow: hidden;
     top: 0;
     left: 0;
-    width: 824px;
+    width: 877px;
     height: 658px;
     z-index: 1000;
 
@@ -235,4 +235,8 @@ body.dragging {
 .thumb,
 .placed-item {
     touch-action: none;
+}
+
+.hidden {
+    display: none !important;
 }
