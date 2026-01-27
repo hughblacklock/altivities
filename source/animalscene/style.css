@@ -9,7 +9,7 @@ body {
 .activity-container {
     position: relative;
     width: 1024px;     /* FIXED WIDTH */
-    height: 650px;     /* FIXED HEIGHT */
+    height: 710px;     /* FIXED HEIGHT */
     margin: 0 auto;    /* center horizontally */
     overflow: hidden;
     background: white;
@@ -77,7 +77,7 @@ body {
     top: 0;
     left: 0;
     width: 877px;
-    height: 658px;
+    height: 600px;
     z-index: 1000;
 
     background-image: url("images/background.png"); /* NEW */
