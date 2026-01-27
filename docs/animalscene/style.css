@@ -9,7 +9,7 @@ body {
 .activity-container {
     position: relative;
     width: 1024px;     /* FIXED WIDTH */
-    height: 768px;     /* FIXED HEIGHT */
+    height: 680px;     /* FIXED HEIGHT */
     margin: 0 auto;    /* center horizontally */
     overflow: hidden;
     background: white;
