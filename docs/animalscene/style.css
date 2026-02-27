@@ -1,3 +1,25 @@
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #111; /* optional letterbox background */
+}
+
+#scaleWrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.activity-container {
+  width: 1024px;
+  height: 768px;
+  transform-origin: top left;
+}
+
 body {
     margin: 0;
     padding: 0;

@@ -132,6 +132,22 @@ loadBtn.addEventListener("click", () => {
     loadInput.click();
 });
 
+function scaleGame() {
+  const baseWidth = 1024;
+  const baseHeight = 768;
+
+  const scaleX = window.innerWidth / baseWidth;
+  const scaleY = window.innerHeight / baseHeight;
+
+  const scale = Math.min(scaleX, scaleY);
+
+  const container = document.querySelector(".activity-container");
+  container.style.transform = `scale(${scale})`;
+}
+
+window.addEventListener("resize", scaleGame);
+window.addEventListener("load", scaleGame);
+
 // When teacher selects a file
 loadInput.addEventListener("change", (e) => {
     const file = e.target.files[0];
@@ -504,3 +520,6 @@ revealBtn.addEventListener("click", () => {
         hideAnimals();
     }
 });
+
+
+
