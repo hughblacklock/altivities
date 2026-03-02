@@ -437,39 +437,32 @@ document.getElementById("resetBtn").addEventListener("click", () => {
     PRESENTATION MODE PLAY AREA
 ------------------------------ */
 
-// ENLARGE: Expand play area to full size
-enlargeBtn.addEventListener("click", () => {
+const BASE_W = 1024;
+const BASE_H = 768;
 
-    // The activity container is already fixed at 1024x768
-    const contRect = activityContainer.getBoundingClientRect();
+// Your normal editor playArea size (whatever you currently use)
+const EDIT_W = 824; // example
+const EDIT_H = 618; // example
 
-    // The play area has a known fixed size
-    const playWidth = playArea.offsetWidth;
-    const playHeight = playArea.offsetHeight;
-
-    // Compute scale
-    const scaleX = contRect.width / playWidth;
-    const scaleY = contRect.height / playHeight;
-    const scale = Math.min(scaleX, scaleY);
-
-    // Apply enlarge mode
-    playArea.classList.add("enlarged", "no-interaction");
-    playArea.style.transform = `scale(${scale})`;
-
+function setEnlargedMode(on) {
+  if (on) {
     // Hide overlays
     overlayRight.classList.add("hidden");
     overlayBottom.classList.add("hidden");
 
-    // Show return button
+    // Scale playArea up so it visually fills the full base board
+    const scaleX = BASE_W / EDIT_W;
+    const scaleY = BASE_H / EDIT_H;
+
+    // If your EDIT area is same aspect ratio as BASE, these will match
+    // If not, you can use Math.min(scaleX, scaleY) to avoid distortion.
+    playArea.classList.add("enlarged", "no-interaction");
+    playArea.style.transform = `scale(${scaleX}, ${scaleY})`;
+
     returnBtn.style.display = "flex";
-    revealBtn.style.display = "flex";
-
-});
-
-
-
-// RETURN: Restore normal layout
-returnBtn.addEventListener("click", () => {
+    // if you also have revealBtn:
+    // revealBtn.style.display = "flex";
+  } else {
     playArea.classList.remove("enlarged", "no-interaction");
     playArea.style.transform = "";
 
@@ -477,13 +470,12 @@ returnBtn.addEventListener("click", () => {
     overlayBottom.classList.remove("hidden");
 
     returnBtn.style.display = "none";
-    revealBtn.style.display = "none";
+    // revealBtn.style.display = "none";
+  }
+}
 
-    // Reset state if needed
-    if (animalsRevealed) {
-        hideAnimals();
-    }
-});
+enlargeBtn.addEventListener("click", () => setEnlargedMode(true));
+returnBtn.addEventListener("click", () => setEnlargedMode(false));
 
 /* ------------------------------
     HIDE/REVEAL IN PRESENTATION

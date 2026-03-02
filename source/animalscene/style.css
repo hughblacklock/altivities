@@ -260,3 +260,9 @@ body.dragging {
 .hidden {
     display: none !important;
 }
+
+.no-interaction,
+.no-interaction * {
+  pointer-events: none;
+}
+.hidden { display: none !important; }
