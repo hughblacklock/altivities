@@ -470,7 +470,7 @@ function setEnlargedMode(on) {
 
     returnBtn.style.display = "flex";
     // if you also have revealBtn:
-    // revealBtn.style.display = "flex";
+    revealBtn.style.display = "flex";
   } else {
     playArea.classList.remove("enlarged", "no-interaction");
     playArea.style.transform = "";
