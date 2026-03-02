@@ -479,7 +479,7 @@ function setEnlargedMode(on) {
     overlayBottom.classList.remove("hidden");
 
     returnBtn.style.display = "none";
-    // revealBtn.style.display = "none";
+    revealBtn.style.display = "none";
   }
 }
 
