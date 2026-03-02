@@ -21,6 +21,7 @@ const loadInput = document.getElementById("loadInput");
 let animalsRevealed = false; // toggle state
 let sceneryZ = 1000;  // scenery always above animals
 let animalZ = 0;      // animals below scenery
+let currentBackground = "images/background.png"; // default
 
 async function loadThumbnails() {
     // Load animals
@@ -80,6 +81,11 @@ function assignZ(element) {
     }
 }
 
+function setBackground(src) {
+  currentBackground = src;
+  playArea.style.backgroundImage = `url("${src}")`;
+}
+
 /* =======================================================
    LOAD SAVED SCENE FROM JSON
    Expected JSON format:
@@ -97,37 +103,35 @@ function assignZ(element) {
 ======================================================= */
 
 function loadSceneFromData(data) {
-    // Clear current placed items
-    document.querySelectorAll(".placed-item").forEach(el => el.remove());
+  document.querySelectorAll(".placed-item").forEach(el => el.remove());
 
-    if (!data || !Array.isArray(data.items)) {
-        console.warn("Scene JSON has no 'items' array.");
-        return;
-    }
+  // background
+  setBackground(data?.background || "images/background.png");
 
-    data.items.forEach(item => {
-        if (!item.src) return;
+  if (!data || !Array.isArray(data.items)) return;
 
-        const img = document.createElement("img");
-        img.src = item.src;
-        img.className = "placed-item";
-        img.dataset.type = item.type || "env";
+  data.items.forEach(item => {
+    if (!item.src) return;
 
-        img.style.position = "absolute";
-        img.style.left = (item.left ?? 0) + "px";
-        img.style.top  = (item.top  ?? 0) + "px";
+    const img = document.createElement("img");
+    img.src = item.src;
+    img.className = "placed-item";
+    img.dataset.type = item.type || "env";
 
-        if (item.width) {
-            img.style.width = item.width + "px";
-        }
+    img.style.left = (item.left ?? 0) + "px";
+    img.style.top  = (item.top ?? 0) + "px";
+    if (item.width) img.style.width = item.width + "px";
 
-        assignZ(img);
-        playArea.appendChild(img);
-    });
+    assignZ(img);
+    playArea.appendChild(img);
+  });
 }
 
 // Click "Load" → open file picker
 loadBtn.addEventListener("click", () => {
+    // if something is stuck, kill it before opening the dialog
+    if (activeItem) cleanupAfterDrag();
+    document.body.classList.remove("dragging");
     loadInput.value = ""; // reset so same file can be reloaded
     loadInput.click();
 });
@@ -204,6 +208,11 @@ function buildSceneData() {
             top: Math.round(top),
             width: Math.round(width)
         });
+
+        return {
+            background: currentBackground,
+            items
+        };
     });
 
     return { items };
