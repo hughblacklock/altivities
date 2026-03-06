@@ -1,0 +1,65 @@
+{
+  "unit": {
+    "unitNumber": 2,
+    "unitSlug": "cafe",
+    "heading": "Unit 2: At the Cafe",
+    "levelLabel": "Level 1",
+    "levelIcon": "solar:cup-hot-bold-duotone"
+  },
+  "activities": [
+    {
+      "id": "activity01",
+      "slug": "morning-coffee",
+      "heading": "Morning Coffee",
+      "description": "Practice ordering a simple coffee and a pastry. Focus on basic polite phrases.",
+      "meta": {
+        "durationLabel": "5 mins",
+        "difficultyLabel": "Easy",
+        "durationIcon": "solar:clock-circle-bold-duotone",
+        "difficultyIcon": "solar:star-bold-duotone"
+      },
+      "styles": {
+        "icon": "solar:bubble-chat-bold-duotone",
+        "iconWrapperClass": "bg-secondary/10 text-secondary",
+        "hoverRingClass": "hover:ring-secondary/20",
+        "playHoverClass": "group-hover:bg-secondary group-hover:text-secondary-foreground"
+      }
+    },
+    {
+      "id": "activity02",
+      "slug": "somethings-missing",
+      "heading": "Something's Missing",
+      "description": "Fill in the blanks as you build the dialogue. Focus on verbs and quantifiers.",
+      "meta": {
+        "durationLabel": "8 mins",
+        "difficultyLabel": "Medium",
+        "durationIcon": "solar:clock-circle-bold-duotone",
+        "difficultyIcon": "solar:star-bold-duotone"
+      },
+      "styles": {
+        "icon": "solar:pen-new-square-bold-duotone",
+        "iconWrapperClass": "bg-accent/20 text-accent-foreground",
+        "hoverRingClass": "hover:ring-secondary/20",
+        "playHoverClass": "group-hover:bg-secondary group-hover:text-secondary-foreground"
+      }
+    },
+    {
+      "id": "activity03",
+      "slug": "group-lunch",
+      "heading": "Group Lunch",
+      "description": "Complex conversation between three people. Focus on turn-taking and summarizing.",
+      "meta": {
+        "durationLabel": "15 mins",
+        "difficultyLabel": "Hard",
+        "durationIcon": "solar:clock-circle-bold-duotone",
+        "difficultyIcon": "solar:star-bold-duotone"
+      },
+      "styles": {
+        "icon": "solar:users-group-rounded-bold-duotone",
+        "iconWrapperClass": "bg-primary/10 text-primary",
+        "hoverRingClass": "hover:ring-secondary/20",
+        "playHoverClass": "group-hover:bg-secondary group-hover:text-secondary-foreground"
+      }
+    }
+  ]
+}

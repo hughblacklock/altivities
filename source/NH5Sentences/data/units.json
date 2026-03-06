@@ -1,0 +1,74 @@
+{
+  "units": [
+    {
+      "id": "unit1",
+      "slug": "greetings",
+      "icon": "solar:hand-shake-bold-duotone",
+      "heading": "Unit 1: Greetings",
+      "description": "Learn how to say hello, introduce yourself, and make new friends.",
+      "locked": false,
+      "styles": {
+        "iconBackground": "bg-primary/10",
+        "iconColor": "text-primary",
+        "hoverBorder": "hover:border-primary/20",
+        "selectTextColor": "text-primary"
+      }
+    },
+    {
+      "id": "unit2",
+      "slug": "cafe",
+      "icon": "solar:cup-hot-bold-duotone",
+      "heading": "Unit 2: At the Cafe",
+      "description": "Practice ordering food, asking for prices, and talking to the barista.",
+      "locked": false,
+      "styles": {
+        "iconBackground": "bg-secondary/10",
+        "iconColor": "text-secondary",
+        "hoverBorder": "hover:border-secondary/20",
+        "selectTextColor": "text-secondary"
+      }
+    },
+    {
+      "id": "unit3",
+      "slug": "directions",
+      "icon": "solar:map-point-bold-duotone",
+      "heading": "Unit 3: Directions",
+      "description": "Find your way around the city by asking for and giving directions.",
+      "locked": false,
+      "styles": {
+        "iconBackground": "bg-accent/20",
+        "iconColor": "text-accent-foreground",
+        "hoverBorder": "hover:border-accent/30",
+        "selectTextColor": "text-accent-foreground"
+      }
+    },
+    {
+      "id": "unit4",
+      "slug": "hobbies",
+      "icon": "solar:basketball-bold-duotone",
+      "heading": "Unit 4: Hobbies",
+      "description": "Talk about what you love to do in your free time and on weekends.",
+      "locked": false,
+      "styles": {
+        "iconBackground": "bg-chart-4/20",
+        "iconColor": "text-yellow-600",
+        "hoverBorder": "hover:border-chart-4/30",
+        "selectTextColor": "text-yellow-600"
+      }
+    },
+    {
+      "id": "unit5",
+      "slug": "shopping",
+      "icon": "solar:shop-2-bold-duotone",
+      "heading": "Unit 5: Shopping",
+      "description": "Try on clothes, ask for different sizes, and make purchases.",
+      "locked": false,
+      "styles": {
+        "iconBackground": "bg-chart-5/20",
+        "iconColor": "text-purple-700",
+        "hoverBorder": "hover:border-chart-5/30",
+        "selectTextColor": "text-purple-700"
+      }
+    }
+  ]
+}

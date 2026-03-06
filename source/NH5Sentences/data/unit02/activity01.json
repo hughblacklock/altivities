@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "unitNumber": 2,
+    "activityId": "activity01",
+    "activitySlug": "morning-coffee",
+    "title": "Morning Coffee"
+  },
+  "speakers": [
+    {
+      "speakerIndicator": 1,
+      "speakerLabel": "Speaker A",
+      "speakerName": "Bob",
+      "avatar": "images/bob.png"
+    },
+    {
+      "speakerIndicator": 2,
+      "speakerLabel": "Speaker B",
+      "speakerName": "Sara",
+      "avatar": "images/sara.png"
+    }
+  ],
+  "lines": [
+    {
+      "id": "l01",
+      "sentenceText": "Good morning! ___.",
+      "sentenceType": "dynamic"
+    },
+    {
+      "id": "l02",
+      "sentenceText": "Hello, ___! How are you?",
+      "sentenceType": "dynamic"
+    },
+    {
+      "id": "l03",
+      "sentenceText": "What can I get for you?",
+      "sentenceType": "static"
+    }
+  ]
+}

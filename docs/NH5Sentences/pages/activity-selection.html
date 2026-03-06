@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ActivitySelection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+    <style type="text/tailwindcss">
+
+        @theme inline {
+        --color-background: var(--background);
+        --color-foreground: var(--foreground);
+        --color-primary: var(--primary);
+        --color-primary-foreground: var(--primary-foreground);
+        --color-secondary: var(--secondary);
+        --color-secondary-foreground: var(--secondary-foreground);
+        --color-muted: var(--muted);
+        --color-muted-foreground: var(--muted-foreground);
+        --color-accent: var(--accent);
+        --color-accent-foreground: var(--accent-foreground);
+        --color-destructive: var(--destructive);
+        --color-card: var(--card);
+        --color-card-foreground: var(--card-foreground);
+        --color-popover: var(--popover);
+        --color-popover-foreground: var(--popover-foreground);
+        --color-border: var(--border);
+        --color-input: var(--input);
+        --color-ring: var(--ring);
+        --color-chart-1: var(--chart-1);
+        --color-chart-2: var(--chart-2);
+        --color-chart-3: var(--chart-3);
+        --color-chart-4: var(--chart-4);
+        --color-chart-5: var(--chart-5);
+
+        --font-font-sans: var(--font-sans);
+        --font-font-heading: var(--font-heading);
+        --font-font-serif: var(--font-serif);
+        --font-font-mono: var(--font-mono);
+
+        --radius-sm: calc(var(--radius) - 4px);
+        --radius-md: calc(var(--radius) - 2px);
+        --radius-lg: var(--radius);
+        --radius-xl: calc(var(--radius) + 4px);
+      }
+
+      :root {
+          --background: #FAFAF8;
+        --foreground: #334155;
+        --primary: #38bdf8;
+        --primary-foreground: #0c4a6e;
+        --secondary: #fb7185;
+        --secondary-foreground: #ffffff;
+        --muted: #f1f5f9;
+        --muted-foreground: #64748b;
+        --accent: #4ade80;
+        --accent-foreground: #14532d;
+        --destructive: #fbbf24;
+        --card: #ffffff;
+        --card-foreground: #1e293b;
+        --popover: #ffffff;
+        --popover-foreground: #1e293b;
+        --border: #e2e8f0;
+        --input: #ffffff;
+        --ring: #4ade80;
+        --chart-1: #38bdf8;
+        --chart-2: #fb7185;
+        --chart-3: #4ade80;
+        --chart-4: #fbbf24;
+        --chart-5: #c084fc;
+
+        --font-sans: "Nunito Sans";
+        --font-heading: "Nunito Sans";
+        --font-serif: "Playfair Display";
+        --font-mono: "JetBrains Mono";
+
+        --radius: 1.5rem;
+      }
+    </style>
+</head>
+
+<body>
+    <div class="min-h-screen bg-background text-foreground font-sans flex flex-col selection:bg-secondary/20">
+        <header
+            class="w-full px-6 md:px-10 py-5 flex items-center justify-between sticky top-0 bg-background/80 backdrop-blur-md z-10">
+            <div class="flex items-center gap-4">
+                <button
+                    class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground">
+                    <iconify-icon icon="solar:arrow-left-bold" class="text-2xl"></iconify-icon>
+                </button>
+                <div class="flex flex-col">
+                    <span class="text-xs font-bold uppercase tracking-wider text-muted-foreground">Now
+                        Exploring</span>
+                    <span id="unit-heading" class="font-heading font-extrabold text-xl text-foreground"></span>
+                </div>
+            </div>
+            <div id="unit-level-pill" class="hidden sm:flex items-center gap-2 px-4 py-2 bg-secondary/10 text-secondary rounded-full font-bold">
+            <iconify-icon id="unit-level-icon" icon="" class="text-xl"></iconify-icon>
+            <span id="unit-level-text"></span>
+            </div>
+        </header>
+        <main class="flex-1 w-full max-w-4xl mx-auto px-6 py-12 flex flex-col gap-10">
+            <div class="space-y-4">
+                <h1 class="text-3xl md:text-4xl font-heading font-extrabold text-foreground tracking-tight">
+                    Pick an Activity
+                </h1>
+                <p class="text-lg text-muted-foreground font-medium max-w-xl">
+                    Practice your English by building different types of conversations at the cafe.
+                </p>
+            </div>
+            <div id="activity-list" class="flex flex-col gap-4"></div>
+            <div class="mt-4 p-6 bg-muted/50 rounded-[var(--radius)] flex items-start gap-4 border border-border">
+                <div class="text-primary mt-1">
+                    <iconify-icon icon="solar:lightbulb-bold" class="text-2xl"></iconify-icon>
+                </div>
+                <div class="space-y-1">
+                    <h4 class="font-bold text-foreground">Teacher Tip:</h4>
+                    <p class="text-sm text-muted-foreground leading-relaxed">
+                        Start with the "Morning Coffee" activity to warm up your vocabulary before trying the
+                        more difficult challenges!
+                    </p>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        function getParam(name) {
+            return new URLSearchParams(window.location.search).get(name);
+        }
+
+        async function loadActivitiesForUnit() {
+            const unitSlug = getParam("unit");
+            if (!unitSlug) {
+            window.location.href = "unit-selection.html";
+            return;
+            }
+
+            // Back button -> unit selection
+            const backBtn = document.querySelector("header button");
+            if (backBtn) backBtn.addEventListener("click", () => window.location.href = "unit-selection.html");
+
+            // 1) Load units.json so we can map slug -> unitNumber (for data/unit02 path)
+            const unitsRes = await fetch("../data/units.json", { cache: "no-store" });
+            if (!unitsRes.ok) throw new Error(`Failed to load units.json: ${unitsRes.status}`);
+            const unitsData = await unitsRes.json();
+
+            const unit = (unitsData.units || []).find(u => u.slug === unitSlug);
+            if (!unit) {
+            console.error("Unknown unit slug:", unitSlug);
+            window.location.href = "unit-selection.html";
+            return;
+            }
+
+            const unitNumberMatch = (unit.heading || "").match(/Unit\s+(\d+)/i);
+            const unitNumber = unitNumberMatch ? Number(unitNumberMatch[1]) : null;
+
+            if (!unitNumber) {
+            console.error("Could not infer unitNumber from unit.heading:", unit.heading);
+            window.location.href = "unit-selection.html";
+            return;
+            }
+
+            const unitDir = `unit${String(unitNumber).padStart(2, "0")}`;
+
+            // 2) Load this unit's activities.json
+            const actRes = await fetch(`../data/${unitDir}/activities.json`, { cache: "no-store" });
+            if (!actRes.ok) throw new Error(`Failed to load activities.json for ${unitDir}: ${actRes.status}`);
+            const actData = await actRes.json();
+
+            console.log("actData:", actData);
+console.log("activities array:", actData.activities);
+console.log("activity-list element:", document.getElementById("activity-list"));
+
+            // Populate header content
+            const headingEl = document.getElementById("unit-heading");
+            if (headingEl) headingEl.textContent = actData.unit?.heading || unit.heading || "";
+
+            const levelIconEl = document.getElementById("unit-level-icon");
+            const levelTextEl = document.getElementById("unit-level-text");
+            const levelPillEl = document.getElementById("unit-level-pill");
+
+            if (levelIconEl) levelIconEl.setAttribute("icon", actData.unit?.levelIcon || "solar:cup-hot-bold-duotone");
+            if (levelTextEl) levelTextEl.textContent = actData.unit?.levelLabel || "";
+            if (levelPillEl && !actData.unit?.levelLabel) levelPillEl.classList.add("hidden");
+
+            // Build activity cards
+            const list = document.getElementById("activity-list");
+            if (!list) return;
+            list.innerHTML = "";
+
+            (actData.activities || []).forEach(activity => {
+            const btn = document.createElement("button");
+            btn.className = `
+                group flex items-center gap-6 p-6 bg-card rounded-[var(--radius)] shadow-sm
+                hover:shadow-md hover:ring-2 ${activity.styles?.hoverRingClass || "hover:ring-secondary/20"}
+                transition-all text-left
+            `;
+
+            btn.innerHTML = `
+                <div class="w-20 h-20 ${activity.styles?.iconWrapperClass || "bg-secondary/10 text-secondary"}
+                rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-110
+                transition-transform duration-300">
+                <iconify-icon icon="${activity.styles?.icon || ""}" class="text-4xl"></iconify-icon>
+                </div>
+
+                <div class="flex-1">
+                <h3 class="text-2xl font-heading font-bold mb-1">${activity.heading || ""}</h3>
+                <p class="text-muted-foreground font-medium leading-relaxed">${activity.description || ""}</p>
+
+                <div class="flex gap-4 mt-3">
+                    <span class="flex items-center gap-1 text-xs font-bold uppercase bg-muted px-2 py-1 rounded text-muted-foreground">
+                    <iconify-icon icon="${activity.meta?.durationIcon || "solar:clock-circle-bold-duotone"}"></iconify-icon>
+                    ${activity.meta?.durationLabel || ""}
+                    </span>
+
+                    <span class="flex items-center gap-1 text-xs font-bold uppercase bg-muted px-2 py-1 rounded text-muted-foreground">
+                    <iconify-icon icon="${activity.meta?.difficultyIcon || "solar:star-bold-duotone"}"></iconify-icon>
+                    ${activity.meta?.difficultyLabel || ""}
+                    </span>
+                </div>
+                </div>
+
+                <div class="hidden sm:flex items-center justify-center w-12 h-12 bg-muted rounded-full text-muted-foreground
+                ${activity.styles?.playHoverClass || "group-hover:bg-secondary group-hover:text-secondary-foreground"}
+                transition-colors duration-300">
+                <iconify-icon icon="solar:play-bold" class="text-xl"></iconify-icon>
+                </div>
+            `;
+
+            btn.addEventListener("click", () => {
+                window.location.href = `main-activity.html?unit=${unitSlug}&activity=${activity.id}`;
+            });
+
+            list.appendChild(btn);
+            });
+        }
+
+        loadActivitiesForUnit().catch(err => {
+            console.error(err);
+            const list = document.getElementById("activity-list");
+            if (list) {
+            list.innerHTML = `
+                <div class="p-6 bg-muted/50 rounded-[var(--radius)] border border-border">
+                <div class="font-bold mb-1">Could not load activities</div>
+                <div class="text-sm text-muted-foreground">
+                    Check DevTools Console. Most common cause: missing ../data/unitXX/activities.json
+                </div>
+                </div>
+            `;
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UnitSelection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+    <style type="text/tailwindcss">
+
+        @theme inline {
+        --color-background: var(--background);
+        --color-foreground: var(--foreground);
+        --color-primary: var(--primary);
+        --color-primary-foreground: var(--primary-foreground);
+        --color-secondary: var(--secondary);
+        --color-secondary-foreground: var(--secondary-foreground);
+        --color-muted: var(--muted);
+        --color-muted-foreground: var(--muted-foreground);
+        --color-accent: var(--accent);
+        --color-accent-foreground: var(--accent-foreground);
+        --color-destructive: var(--destructive);
+        --color-card: var(--card);
+        --color-card-foreground: var(--card-foreground);
+        --color-popover: var(--popover);
+        --color-popover-foreground: var(--popover-foreground);
+        --color-border: var(--border);
+        --color-input: var(--input);
+        --color-ring: var(--ring);
+        --color-chart-1: var(--chart-1);
+        --color-chart-2: var(--chart-2);
+        --color-chart-3: var(--chart-3);
+        --color-chart-4: var(--chart-4);
+        --color-chart-5: var(--chart-5);
+
+        --font-font-sans: var(--font-sans);
+        --font-font-heading: var(--font-heading);
+        --font-font-serif: var(--font-serif);
+        --font-font-mono: var(--font-mono);
+
+        --radius-sm: calc(var(--radius) - 4px);
+        --radius-md: calc(var(--radius) - 2px);
+        --radius-lg: var(--radius);
+        --radius-xl: calc(var(--radius) + 4px);
+      }
+
+      :root {
+          --background: #FAFAF8;
+        --foreground: #334155;
+        --primary: #38bdf8;
+        --primary-foreground: #0c4a6e;
+        --secondary: #fb7185;
+        --secondary-foreground: #ffffff;
+        --muted: #f1f5f9;
+        --muted-foreground: #64748b;
+        --accent: #4ade80;
+        --accent-foreground: #14532d;
+        --destructive: #fbbf24;
+        --card: #ffffff;
+        --card-foreground: #1e293b;
+        --popover: #ffffff;
+        --popover-foreground: #1e293b;
+        --border: #e2e8f0;
+        --input: #ffffff;
+        --ring: #4ade80;
+        --chart-1: #38bdf8;
+        --chart-2: #fb7185;
+        --chart-3: #4ade80;
+        --chart-4: #fbbf24;
+        --chart-5: #c084fc;
+
+        --font-sans: "Nunito Sans";
+        --font-heading: "Nunito Sans";
+        --font-serif: "Playfair Display";
+        --font-mono: "JetBrains Mono";
+
+        --radius: 1.5rem;
+      }
+    </style>
+</head>
+
+<body>
+    <div class="min-h-screen bg-background text-foreground font-sans flex flex-col selection:bg-primary/20">
+        <header class="w-full px-6 md:px-10 py-5 flex justify-between items-center bg-transparent">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-10 h-10 bg-primary text-primary-foreground rounded-2xl flex items-center justify-center shadow-sm">
+                    <iconify-icon icon="solar:chat-round-line-bold" class="text-2xl"></iconify-icon>
+                </div>
+                <span class="font-heading font-extrabold text-2xl tracking-tight text-foreground">SentenceBuilder</span>
+            </div>
+            <button
+                class="flex items-center gap-2 text-muted-foreground hover:text-foreground font-semibold px-4 py-2 rounded-full hover:bg-muted transition-colors">
+                <iconify-icon icon="solar:info-circle-bold-duotone" class="text-xl"></iconify-icon><span>How to
+                    play</span>
+            </button>
+        </header>
+        <main class="flex-1 w-full max-w-5xl mx-auto px-6 py-12 flex flex-col gap-12">
+            <div class="text-center space-y-4 max-w-3xl mx-auto">
+                <h1 class="text-4xl md:text-5xl font-heading font-extrabold text-foreground tracking-tight">
+                    What are we learning today?
+                </h1>
+                <p class="text-xl text-muted-foreground font-medium">
+                    Choose a unit below to start building your English conversations.
+                </p>
+            </div>
+            <div id="unit-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </main>
+    </div>
+        <script>
+        async function loadUnits() {
+        const response = await fetch("/NH5Sentences/data/units.json");
+        const data = await response.json();
+
+        const grid = document.getElementById("unit-grid");
+
+        data.units.forEach(unit => {
+
+            const card = document.createElement("button");
+
+            card.className = `
+            group relative text-left bg-card p-8 rounded-[var(--radius)]
+            shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all
+            duration-300 border-2 border-transparent ${unit.styles.hoverBorder}
+            flex flex-col h-full focus:outline-none focus:ring-4
+            focus:ring-ring focus:border-transparent
+            `;
+
+            card.innerHTML = `
+            <div class="w-14 h-14 ${unit.styles.iconBackground} ${unit.styles.iconColor}
+                rounded-2xl flex items-center justify-center mb-6
+                group-hover:scale-110 transition-transform duration-300">
+
+                <iconify-icon icon="${unit.icon}" class="text-3xl"></iconify-icon>
+            </div>
+
+            <h2 class="text-2xl font-heading font-bold mb-2">
+                ${unit.heading}
+            </h2>
+
+            <p class="text-muted-foreground font-medium flex-1">
+                ${unit.description}
+            </p>
+
+            <div class="mt-8 flex items-center ${unit.styles.selectTextColor}
+                font-bold gap-2 opacity-0 group-hover:opacity-100
+                transition-opacity translate-x-[-10px]
+                group-hover:translate-x-0 duration-300">
+
+                <span>Select Unit</span>
+                <iconify-icon icon="solar:arrow-right-bold" class="text-lg"></iconify-icon>
+            </div>
+            `;
+
+            card.addEventListener("click", () => {
+            window.location.href = `activity-selection.html?unit=${unit.slug}`;
+            });
+
+            grid.appendChild(card);
+        });
+        }
+
+    loadUnits();
+    </script>
+</body>
+
+</html>
