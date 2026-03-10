@@ -1,0 +1,164 @@
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #111; /* optional letterbox background */
+}
+
+#scaleWrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.activity-container {
+  width: 1024px;
+  height: 768px;
+  transform-origin: top left;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #f6f6f6;
+    font-family: Arial, sans-serif;
+    user-select: none;
+}
+
+.activity-container {
+    position: relative;
+    width: 1024px;     /* FIXED WIDTH */
+    height: 623px;     /* FIXED HEIGHT */
+    margin: 0 auto;    /* center horizontally */
+    overflow: hidden;
+    background: white;
+}
+
+/* Right-hand vertical overlay strip */
+.overlay-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 180px;       /* stays fixed */
+    height: 100%;       /* fills 768px height */
+    background: #eee;
+    border-left: 2px solid #ccc;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    padding: 6px;
+    overflow-y: auto;
+    justify-items: center;
+}
+
+.overlay-right {
+    z-index: 2000;
+    grid-auto-rows: 84px;
+    grid-auto-columns: 84px;
+}
+
+.play-area {
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    width: 877px;
+    height: 100%;
+    z-index: 1000;
+
+    background-image: url("images/background.png"); /* NEW */
+    background-size: cover;     /* scale to cover entire area */
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.play-area.scaled {
+    transform-origin: top left;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5000;
+}
+
+.play-wrapper {
+    position: relative;
+    flex: 1;
+    overflow: visible;  /* allow scaled content to show */
+}
+
+.thumb {
+    width: 80px;
+    height: 80px;
+    margin: 0;
+    object-fit: contain;
+    flex-shrink: 0;
+    border: 2px solid #aaa;
+    background: white;
+    border-radius: 6px;
+    cursor: grab;
+}
+
+.thumb:active {
+    cursor: grabbing;
+}
+
+.placed-item {
+    position: absolute;
+    cursor: grab;
+    pointer-events: auto; /* must allow dragging */
+    z-index: 1100; /* below overlays but above playarea background */
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.placed-item:active {
+    cursor: grabbing;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.8); /* blue glow */
+
+}
+
+.material-symbols-outlined {
+    font-size: 18px;
+    vertical-align: middle;
+}
+
+/* When enlarged: play area sits on top and is scaled */
+.play-area.enlarged {
+    position: absolute;      /* float it over everything */
+    top: 0;
+    left: 0;
+    transform-origin: top left;
+    z-index: 3000;           /* above overlays (which are hidden anyway) */
+}
+
+/* Disable all interaction while in presentation mode */
+.play-area.no-interaction,
+.play-area.no-interaction * {
+    pointer-events: none;
+}
+
+.placed-item, .thumb {
+    touch-action: auto;
+}
+
+body.dragging {
+    touch-action: none !important;
+    overflow: hidden;           /* optional: stops bounce scroll on iOS */
+}
+
+.thumb,
+.placed-item {
+    touch-action: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.no-interaction,
+.no-interaction * {
+  pointer-events: none;
+}
+.hidden { display: none !important; }

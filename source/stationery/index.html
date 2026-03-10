@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Who are you?</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+<div id="scaleWrapper">
+<div class="activity-container">
+
+    <!-- PLAY AREA -->
+    <div class="play-area" id="playArea"></div>
+
+    <!-- RIGHT OVERLAY: ANIMALS -->
+    <div class="overlay-right" id="overlayRight"></div>
+
+    <!-- HIDDEN RETURN BUTTON -->
+    <button class="return-btn" id="returnBtn" style="display:none;">
+        <span class="material-symbols-outlined">zoom_in_map</span> Return
+    </button>
+
+    <!-- SHOW/HIDE BUTTON -->
+    <button class="reveal-btn" id="revealBtn" style="display:none;">
+        <span class="material-symbols-outlined">visibility</span>Animals
+    </button>
+
+</div>
+</div>
+
+<script src="DragDropTouch.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
