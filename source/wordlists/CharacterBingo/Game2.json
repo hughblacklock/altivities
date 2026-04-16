@@ -1,6 +1,6 @@
 [
     {
-        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game1/chopper.png",
+        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game2/chopper.png",
         "en": "Chopper",
         "ja": {
             "kanji": "チョッパー",
@@ -8,7 +8,7 @@
         }
     },
     {
-        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game1/eevee.png",
+        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game2/eevee.png",
         "en": "Eevee",
         "ja": {
             "kanji": "イーブイ",
@@ -16,7 +16,7 @@
         }
     },
     {
-        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game1/godzilla.png",
+        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game2/godzilla.png",
         "en": "Godzilla",
         "ja": {
             "kanji": "ゴジラ",
@@ -24,7 +24,7 @@
         }
     },
     {
-        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game1/inkling.png",
+        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game2/inkling.png",
         "en": "Inkling",
         "ja": {
             "kanji": "インクリング",
@@ -32,7 +32,7 @@
         }
     },
     {
-        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game1/luffy.png",
+        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game2/luffy.png",
         "en": "Luffy",
         "ja": {
             "kanji": "ルーフィ",
@@ -40,7 +40,7 @@
         }
     },
     {
-        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game1/Mario.png",
+        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game2/Mario.png",
         "en": "Mario",
         "ja": {
             "kanji": "マリオ",
@@ -48,7 +48,7 @@
         }
     },
     {
-        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game1/mickey.png",
+        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game2/mickey.png",
         "en": "Mickey",
         "ja": {
             "kanji": "ミーキー",
@@ -56,7 +56,7 @@
         }
     },
     {
-        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game1/rilakkuma.png",
+        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game2/rilakkuma.png",
         "en": "Rilakkuma",
         "ja": {
             "kanji": "リラックマ",
@@ -64,7 +64,7 @@
         }
     },
     {
-        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game1/totoro.png",
+        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game2/totoro.png",
         "en": "Totoro",
         "ja": [
             {
@@ -74,7 +74,7 @@
         ]
     },
     {
-        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game1/yoshi.png",
+        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game2/yoshi.png",
         "en": "Yoshi",
         "ja": {
             "kanji": "ヨシ",
