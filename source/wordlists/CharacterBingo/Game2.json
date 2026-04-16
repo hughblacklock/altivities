@@ -1,0 +1,84 @@
+[
+    {
+        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game1/anpanman.png",
+        "en": "Anpanman",
+        "ja": {
+            "kanji": "アンパンマン",
+            "hiragana": "あんぱんまん"
+        }
+    },
+    {
+        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game1/ash.png",
+        "en": "Ash",
+        "ja": {
+            "kanji": "サトシ",
+            "hiragana": "さとし"
+        }
+    },
+    {
+        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game1/conan.png",
+        "en": "Conan",
+        "ja": {
+            "kanji": "コナン",
+            "hiragana": "こなん"
+        }
+    },
+    {
+        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game1/doraemon.png",
+        "en": "Doraemon",
+        "ja": {
+            "kanji": "ドラエモン",
+            "hiragana": "どらえもん"
+        }
+    },
+    {
+        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game1/minion.png",
+        "en": "Minion",
+        "ja": {
+            "kanji": "ミニョン",
+            "hiragana": "みにょん"
+        }
+    },
+    {
+        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game1/oshiri.png",
+        "en": "Oshiri Tantei",
+        "ja": {
+            "kanji": "おしり",
+            "hiragana": "おしり"
+        }
+    },
+    {
+        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game1/pikachu.png",
+        "en": "Pikachu",
+        "ja": {
+            "kanji": "ピカチュウ",
+            "hiragana": "ぴかちゅう"
+        }
+    },
+    {
+        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game1/pooh.png",
+        "en": "Pooh",
+        "ja": {
+            "kanji": "プー",
+            "hiragana": "ぷー"
+        }
+    },
+    {
+        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game1/snoopy.png",
+        "en": "Snoopy",
+        "ja": [
+            {
+                "kanji": "スヌーピー",
+                "hiragana": "すぬーぴー"
+            }
+        ]
+    },
+    {
+        "image": "https://hughblacklock.github.io/altivities/wordlists/CharacterBingo/Game1/tanjiro.png",
+        "en": "Tanjiro",
+        "ja": {
+            "kanji": "タンジロ",
+            "hiragana": "たんじろ"
+        }
+    }
+]
