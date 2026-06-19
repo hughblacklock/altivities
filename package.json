@@ -7,7 +7,9 @@
     "build": "tsc && npm run build-copy",
     "build-copy": "copyfiles --up 1 source/**/*.css source/**/*.html source/**/*.jpg source/**/*.js source/**/*.json source/**/*.md source/**/*.mp3 source/**/*.pdf source/**/*.png source/**/*.svg source/**/*.woff2 docs",
     "build-pdfs": "md-to-pdf docs/abcrace/README.md docs/bingo/README.md docs/cards/README.md docs/clock/README.md docs/kanarace/README.md docs/memory/README.md docs/order/README.md docs/parfait/README.md docs/pizza/README.md docs/sentences/README.md docs/wordlists/README.md",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
   },
   "repository": {
     "type": "git",
@@ -37,6 +39,7 @@
     "eslint": "^8.11.0",
     "md-to-pdf": "^5.1.0",
     "survey-jquery": "^1.9.26",
-    "typescript": "^4.6.2"
+    "typescript": "^4.6.2",
+    "wrangler": "^4.83.0"
   }
 }
